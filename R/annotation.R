@@ -72,7 +72,7 @@ aaf.handler <- function (probeids, chip, name)
 	  "UniGene", "PubMed", "Gene Ontology", "Pathway")
     else
         switch(name,
-               Probe = new("aafList", as.list(probeids)),
+               Probe = aafProbe(probeids),
                Symbol = aafSymbol(probeids, chip),
                Description = aafDescription(probeids, chip),
                Function = aafFunction(probeids, chip),
@@ -236,6 +236,31 @@ aaf.handler <- function (probeids, chip, name)
         else
             cat("list()\n", sep = "")
     
+    }, where = where)
+
+## Define class aafProbe
+    
+    setClass("aafProbe", "character", prototype = character(0), 
+             where = where)
+    
+    assign("aafProbe", function(probeids) {
+        
+        probes <- as.list(probeids)
+        for(i in 1:length(probes))
+            class(probes[[i]]) <- "aafProbe"
+        
+        return(new("aafList", probes))
+    
+    }, envir = where)
+    
+    setMethod("getURL", "aafProbe", function(object) {
+        
+        url <- "https://www.affymetrix.com/LinkServlet?&probeset="
+        
+        if( !length(object) )
+            return(character(0))
+        return(paste(url, object, sep = ""))
+        
     }, where = where)
     
 ## Define class aafSymbol
