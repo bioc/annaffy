@@ -48,17 +48,23 @@ require("KEGG") || stop("Couldn't load package KEGG")
 
 .aaf.goterm <- function (num) {
 
-    if (!nchar(num))
+    if ( !is.list(num) )
+        return(list())
+
+    if (is.na(num$Ontology))
         return(list())
     
-    if (exists(num, GOBPID2TERM))
-        return(list(name = get(num, GOBPID2TERM), type = "Biological Process"))
+    if (num$Ontology == "BP")
+        return(list(name = get(num$GOID, GOTERM), 
+                    type = "Biological Process"))
     
-    if (exists(num, GOCCID2TERM))
-        return(list(name = get(num, GOCCID2TERM), type = "Cellular Component"))
+    if (num$Ontology == "CC")
+        return(list(name = get(num$GOID, GOTERM), 
+                    type = "Cellular Component"))
     
-    if (exists(num, GOMFID2TERM))
-        return(list(name = get(num, GOMFID2TERM), type = "Molecular Function"))
+    if (num$Ontology == "MF")
+        return(list(name = get(num$GOID, GOTERM), 
+                    type = "Molecular Function"))
     
     return(list())
 }
@@ -433,12 +439,12 @@ aafGO <- function(probeids, chip) {
     for(i in 1:length(probeids)) {
         go <- gos[[i]]
         results[[i]] <- list()
-        if( !is.na(go[1]) ) {
+        if( is.list(go) ) {
             for(j in 1:length(go)) {
-                nametype <- .aaf.goterm(go[j])
+                nametype <- .aaf.goterm(go[[j]])
                 if( length(nametype) ) {
                     result <- list()
-                    attributes(result) <- list(id = go[j], name = nametype$name, type = nametype$type, evid = names(go)[j], class = "aafGOItem")
+                    attributes(result) <- list(id = go[[j]]$GOID, name = nametype$name, type = nametype$type, evid = go[[j]]$Evidence, class = "aafGOItem")
                     results[[i]] <- c(results[[i]], list(result))
                 }
             }

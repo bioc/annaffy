@@ -1,3 +1,3 @@
 require("methods", quietly=TRUE)
-require("utils", quietly=TRUE)
+if (version$minor >= 9) require("utils", quietly=TRUE)
 

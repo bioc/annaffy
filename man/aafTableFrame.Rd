@@ -6,7 +6,7 @@
 }
 
 \usage{
-aafTableFrame(frame, colnames = names(df), probeids = row.names(frame), 
+aafTableFrame(frame, colnames = names(frame), probeids = row.names(frame), 
               signed = FALSE)
 }
 \arguments{
