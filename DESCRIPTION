@@ -1,11 +1,12 @@
 Package: annaffy
-Version: 1.0
-Date: 2003-07-11
-Title: Annotation for Affymetrix probes
+Version: 1.0.1
+Date: 2003-08-25
+Title: Annotation tools for Affymetrix biological metadata
 Author: Colin A. Smith <annaffy@colinsmith.org>
 Maintainer: Colin A. Smith <annaffy@colinsmith.org>
-Depends: Biobase, tcltk, GO, KEGG
-Description: Functions for organizing and presenting data from 
-  BioConductor Affymetrix annotation data packages in HTML and
-  text.
+Depends: R (>= 1.7.0), Biobase, tcltk, GO, KEGG
+Description: Functions for handling data from Bioconductor Affymetrix
+  annotation data packages. Produces compact HTML and text reports
+  including experimental data and URL links to many online databases.
+  Allows searching biological metadata using various criteria.
 License: LGPL

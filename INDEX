@@ -36,8 +36,12 @@ aafPathway-class        Class aafPathway, a class for KEGG pathway ids
 aafPathway              Constructor for aafPathway objects
 aafPathwayItem-class    Class aafPathwayItem, a class for KEGG pathway
                         id elements
+aafProbe-class          Class aafProbe, a class for Probe ids
+aafProbe                Constructor for aafProbe objects
 aafPubMed-class         Class aafPubMed, a class for PubMed ids
 aafPubMed               Constructor for aafPubMed objects
+aafSearchGO             Find probe ids corresponding to GO ids
+aafSearchText           Search metadata annotation text
 aafSigned-class         Class aafSigned, a class for signed numerical
                         data
 aafSymbol-class         Class aafSymbol, a class for gene symbols
