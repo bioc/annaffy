@@ -23,9 +23,12 @@ aafDescription(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffyGENENAME)
-descriptions <- aafDescription(probes, "annaffy")
-show(descriptions[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    descriptions <- aafDescription(probes, "hgu95av2")
+    show(descriptions[6:10])
+}
 }
 
 \seealso{\link{aafDescription-class}}

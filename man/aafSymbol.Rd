@@ -23,9 +23,12 @@ aafSymbol(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffySYMBOL)
-symbols <- aafSymbol(probes, "annaffy")
-show(symbols[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    symbols <- aafSymbol(probes, "hgu95av2")
+    show(symbols[6:10])
+}
 }
 
 \seealso{\link{aafSymbol-class}}

@@ -23,9 +23,12 @@ aafUniGene(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffyUNIGENE)
-ugs <- aafUniGene(probes, "annaffy")
-show(ugs[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    ugs <- aafUniGene(probes, "hgu95av2")
+    show(ugs[6:10])
+}
 }
 
 \seealso{\link{aafUniGene-class}}

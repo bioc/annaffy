@@ -330,7 +330,7 @@ aafLocusLink <- function(probeids, chip) {
 
 setMethod("getURL", "aafLocusLink", function(object) {
     
-    url <- "http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l="
+    url <- "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&dopt=Graphics&list_uids="
     
     if( !length(object) )
         return(character(0))

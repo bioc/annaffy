@@ -23,9 +23,12 @@ aafCytoband(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffyMAP)
-bands <- aafCytoband(probes, "annaffy")
-show(bands[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    bands <- aafCytoband(probes, "hgu95av2")
+    show(bands[6:10])
+}
 }
 
 \seealso{\link{aafCytoband-class}}

@@ -23,9 +23,12 @@ aafChromLoc(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffyCHRLOC)
-locations <- aafChromLoc(probes, "annaffy")
-show(locations[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    locations <- aafChromLoc(probes, "hgu95av2")
+    show(locations[6:10])
+}
 }
 
 \seealso{\link{aafChromLoc-class}}

@@ -23,9 +23,12 @@ aafGenBank(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffyACCNUM)
-gbs <- aafGenBank(probes, "annaffy")
-show(gbs[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    gbs <- aafGenBank(probes, "hgu95av2")
+    show(gbs[6:10])
+}
 }
 
 \seealso{\link{aafGenBank-class}}

@@ -71,15 +71,15 @@ package are mapped to empty objects.)
 library(annaffy)
 @
 
-(For the purpose of demonstration, \verb+annaffy+ can act as its
-own data package. It contains a subset of 250 random genes selected
-from the \verb+hgu95av2+ data package.)
+(For the purpose of demonstration, we will use the \verb+hgu95av2+
+metadata package and probe ids from the \verb+aafExpr+ dataset.)
 
 <<>>=
-probeids <- ls(annaffySYMBOL)
-symbols <- aafSymbol(probeids, "annaffy")
-symbols[1:3]
-symbols[[4]]
+data(aafExpr)
+probeids <- geneNames(aafExpr)
+symbols <- aafSymbol(probeids, "hgu95av2")
+symbols[[54]]
+symbols[55:57]
 @
 
 All annotation constructors return their results as \verb+aafList+
@@ -90,13 +90,13 @@ objects. Note the differing ways \verb+annaffy+ handles missing
 annotation data.
 
 <<>>=
-getText(symbols[1:4])
+getText(symbols[54:57])
 @
 
 Other annotation constructors return more complex data structures:
 
 <<>>=
-gos <- aafGO(probeids, "annaffy")
+gos <- aafGO(probeids, "hgu95av2")
 gos[[3]]
 @
 
@@ -139,20 +139,21 @@ sequenced the gene fragment. (See this URL
 \href{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=search&db=nucleotide&term=U41068%5BACCN%5D&doptcmdl=GenBank}{here}.)
 
 <<>>=
-gbs <- aafGenBank(probeids, "annaffy")
+gbs <- aafGenBank(probeids, "hgu95av2")
 getURL(gbs[[1]])
 @
 
 In most distributions of R, you can open URLs in your browser with
 the \verb+browseURL()+ function. Many other types of URLs are also
-possible. LocusLink is a very useful online database that links to
-many other data sources not referenced by Bioconductor. One worthy
-of note is OMIM, which provides relatively concise gene function
-and mutant phenotype information. (See this URL
-\href{http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l=2322}{here}.)
+possible. Entrez Gene (formerly LocusLink) is a very useful online
+database that links to many other data sources not referenced by
+Bioconductor. One worthy of note is OMIM, which provides relatively
+concise gene function and mutant phenotype information. (See this
+URL
+\href{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&dopt=Graphics&list_uids=2322}{here}.)
 
 <<>>=
-lls <- aafLocusLink(probeids, "annaffy") 
+lls <- aafLocusLink(probeids, "hgu95av2") 
 getURL(lls[[2]])
 @
 
@@ -163,7 +164,7 @@ annotations. (See this URL
 \href{http://www.ncbi.nlm.nih.gov/mapview/map_search.cgi?direct=on&query=U02687%5BACCN%5D}{here}.)
 
 <<>>=
-bands <- aafCytoband(probeids, "annaffy") 
+bands <- aafCytoband(probeids, "hgu95av2") 
 getURL(bands[[2]])
 @
 
@@ -172,29 +173,29 @@ class. It will provide a link to a list of abstracts on PubMed
 which describe the gene of interest. The list abstracts that
 Bioconductor provides are by no means complete and will sometimes
 only include the paper in which the gene was cloned. (See this URL
-\href{http://www.ncbi.nih.gov/entrez/query.fcgi?tool=bioconductor&cmd=Retrieve&db=PubMed&list_uids=12393674%2c12239147%2c12239146%2c12070009%2c12060771%2c12036858%2c11971190%2c8394751%2c7507245}{here}.)
+\href{http://www.ncbi.nih.gov/entrez/query.fcgi?tool=bioconductor&cmd=Retrieve&db=PubMed&list_uids=15059064%2c14759363%2c14737077%2c14670924%2c14630076%2c14604974%2c14562119%2c14504097%2c12969963%2c12935959%2c12926083%2c12854887%2c12842996%2c12816873%2c12691136%2c12676789%2c12481903%2c12468433%2c12393674%2c12239147%2c12239146%2c12070009%2c12060771%2c12036858%2c11983110%2c11971190%2c8394751%2c7507245}{here}.)
 
 <<>>=
-pmids <- aafPubMed(probeids, "annaffy")
+pmids <- aafPubMed(probeids, "hgu95av2")
 getURL(pmids[[2]])
 @
 
 A number of interesting queries can be done with the gene ontology
 class. You can display the gene ontology family hierarchy for an
-entire at once, including multiple GO ids. The usefulness of such
-a query may be dubious, but it is possible. See this URL
-\href{http://godatabase.org/cgi-bin/go.cgi?open_0=GO:0005021&open_0=GO:0005524&open_0=GO:0004872&open_0=GO:0007169&open_0=GO:0008284&open_0=GO:0006468&open_0=GO:0005887&open_0=GO:0016740}{here}.
+entire probe id at once, including multiple GO ids. The usefulness
+of such a query may be dubious, but it is possible. See this URL
+\href{http://godatabase.org/cgi-bin/go.cgi?open_0=GO:0007155&open_0=GO:0005581&open_0=GO:0030199&open_0=GO:0005592&open_0=GO:0005737&open_0=GO:0030020&open_0=GO:0007605&open_0=GO:0006817&open_0=GO:0001501}{here}.
 
 <<>>=
-getURL(gos[[2]])
+getURL(gos[[1]])
 @
 
 You can also show the family hierarchy for a single GO id. (See
 this URL
-\href{http://godatabase.org/cgi-bin/go.cgi?open_0=GO:0007169}{here}.)
+\href{http://godatabase.org/cgi-bin/go.cgi?open_0=GO:0005592}{here}.)
 
 <<>>=
-getURL(gos[[2]][[4]])
+getURL(gos[[1]][[4]])
 @
 
 The last link type of note is that for KEGG Pathway information.
@@ -205,7 +206,7 @@ pathways a gene is involved in. (See this URL
 Look for the enzyme in question to be highlighted in red.)
 
 <<>>=
-paths <- aafPathway(probeids, "annaffy")
+paths <- aafPathway(probeids, "hgu95av2")
 getURL(paths[[5]])
 @
 
@@ -319,7 +320,7 @@ chips, download the appropriate data package from the Bioconductor
 website.
 
 <<>>=
-anntable <- aafTableAnn(probeids[1:50], "annaffy", anncols)
+anntable <- aafTableAnn(probeids[1:50], "hgu95av2", anncols)
 @
 
 To see what has been produced so far, use the \verb+saveHTML()+

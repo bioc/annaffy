@@ -23,9 +23,12 @@ aafGO(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffyGO)
-gos <- aafGO(probes, "annaffy")
-show(gos[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    gos <- aafGO(probes, "hgu95av2")
+    show(gos[6:10])
+}
 }
 
 \seealso{\link{aafGO-class}}

@@ -23,9 +23,12 @@ aafLocusLink(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffyLOCUSID)
-lls <- aafLocusLink(probes, "annaffy")
-show(lls[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    lls <- aafLocusLink(probes, "hgu95av2")
+    show(lls[6:10])
+}
 }
 
 \seealso{\link{aafLocusLink-class}}

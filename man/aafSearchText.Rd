@@ -23,8 +23,10 @@ aafSearchText(chip, colnames, text, logic = "OR")
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-aafSearchText("annaffy", "Description", c("kinase", "interferon"))
-aafSearchText("annaffy", c("Gene Ontology", "Pathway"), "ribosome")
+if (require(hgu95av2)) {
+    aafSearchText("hgu95av2", "Description", c("kinase", "interferon"))
+    aafSearchText("hgu95av2", c("Gene Ontology", "Pathway"), "ribosome")
+}
 }
 
 \seealso{\link{aafSearchGO}}

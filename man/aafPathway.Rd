@@ -23,9 +23,12 @@ aafPathway(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffyPATH)
-pathways <- aafPathway(probes, "annaffy")
-show(pathways[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    pathways <- aafPathway(probes, "hgu95av2")
+    show(pathways[6:10])
+}
 }
 
 \seealso{\link{aafPathway-class}}

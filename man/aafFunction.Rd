@@ -23,9 +23,12 @@ aafFunction(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffySUMFUNC)
-functions <- aafFunction(probes, "annaffy")
-show(functions[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    functions <- aafFunction(probes, "hgu95av2")
+    show(functions[6:10])
+}
 }
 
 \seealso{\link{aafFunction-class}}

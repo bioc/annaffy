@@ -20,9 +20,12 @@ aafProbe(probeids)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffySYMBOL)
-probesets <- aafProbe(probes)
-getURL(probesets[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    probesets <- aafProbe(probes)
+    getURL(probesets[6:10])
+}
 }
 
 \seealso{\link{aafProbe-class}}

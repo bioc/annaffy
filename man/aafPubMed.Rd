@@ -23,9 +23,12 @@ aafPubMed(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-probes <- ls(annaffyPMID)
-pmids <- aafPubMed(probes, "annaffy")
-show(pmids[6:10])
+if (require(hgu95av2)) {
+    data(aafExpr)
+    probes <- geneNames(aafExpr)
+    pmids <- aafPubMed(probes, "hgu95av2")
+    show(pmids[6:10])
+}
 }
 
 \seealso{\link{aafPubMed-class}}
