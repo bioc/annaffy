@@ -3,7 +3,7 @@
 % likely to be overwritten.
 %
 %\VignetteIndexEntry{annaffy Primer}
-%\VignetteDepends{Biobase, GO, KEGG, multtest}
+%\VignetteDepends{Biobase, GO, KEGG, multtest, hgu95av2}
 %\VignetteKeywords{HTML, URL}
 %\VignettePackage{annaffy}
 \documentclass[12pt]{article}
@@ -330,7 +330,8 @@ method to generate the HTML report. Using the optional argument
 saveHTML(anntable, "example1.html", title = "Example Table without Data")
 @
 
-See this page online \href{http://genome.nasa.gov/downloads/annaffy/example1.html}{here}.
+See this page online
+\href{http://genome.nasa.gov/downloads/annaffy/example1.html}{here}.
 
 \subsection{Adding Other Data}
 
@@ -366,7 +367,8 @@ table <- merge(table, exprtable)
 saveHTML(table, "example2.html", title = "Example Table with Data")
 @
 
-See this page online \href{http://genome.nasa.gov/downloads/annaffy/example2.html}{here}.
+See this page online
+\href{http://genome.nasa.gov/downloads/annaffy/example2.html}{here}.
 
 Producing a tab-delimited text version uses the \verb+saveText()+
 method.  The text ouput also includes more digits of precision than
@@ -375,5 +377,114 @@ HTML.
 <<>>=
 saveText(table, "example2.txt")
 @
+
+\section{Searching Metadata}
+
+Often a biologist will make hypotheses about changes in gene
+expression either before or after the microarray experiment. In
+order to facilitate the formulation and testing of such hypotheses,
+\verb+annaffy+ includes functions to search annotation metadata
+using various criteria. All search functions return character
+vectors of Affymetrix probe ids that can be used to subset data
+and annotation.
+
+\subsection{Text}
+
+The two currently implemented search functions are simple and easy
+to use. The first is a text search that matches against the textual
+representation of biological metadata. Recall that textual
+representations are extracted using the \verb+getText()+ method.
+For complex annotation structures, the textual representation can
+include a variety of information, including numeric identifiers
+and textual descriptions.
+
+For the purposes of demonstration, we will use the hgu95av2 annotation
+data package available through Bioconductor.
+
+<<>>=
+library(hgu95av2)
+probeids <- ls(hgu95av2SYMBOL)
+gos <- aafGO(probeids[1:2], "hgu95av2")
+getText(gos)
+@
+
+The textual search is probably best applied to the Symbol, Description,
+and Pathway metadata types. (A specialized Gene Ontology search
+will be discussed later.) For instance, to find all the kinases on
+a chip, simply do a text search of Description for kinases.
+
+<<>>=
+kinases <- aafSearchText("hgu95av2", "Description", "kinase")
+kinases[1:5]
+print(length(kinases))
+@
+
+One can search multiple metadata types with multiple queries all
+with a single function call. For instance, to find all genes with
+"ribosome" or "polymerase" in the Description or Pathway annotation,
+use the following function call.
+
+<<>>=
+probes <- aafSearchText("hgu95av2", c("Description", "Pathway"),
+                        c("ribosome", "polymerase"))
+print(length(probes))
+@
+
+When doing searches of multiple annotation data types or multiple
+terms, by default the search returns all probe ids matching any of
+the search criteria. That can be altered by changing the logical
+operator from OR to AND using the \verb+logic="AND"+ argument. This
+is useful because \verb+aafSearchText()+ does not automatically
+tokenize a search query as Google and many other search engines
+do. For example, "DNA polymerase" finds all occurrences of that
+exact string. To find all probes whose description contains both
+"DNA" and "polymerase", use the following function call.
+
+<<>>=
+probes <- aafSearchText("hgu95av2", "Description",
+                        c("DNA", "polymerase"), logic = "AND")
+print(length(probes))
+@
+
+Another useful application of the text search is to map a vector
+of GenBank accession numbers onto a vector of probe ids. This comes
+in handy if you wish to filter microarray data based on the results
+of a BLAST job.
+
+<<>>=
+gbs <- c("AF035121", "AL021546", "AJ006123", "AL080082", "AI289489")
+aafSearchText("hgu95av2", "GenBank", gbs)
+@
+
+Lastly, two points for power users. One, the text search is always
+case insensitive. Second, individual search terms are treated as
+Perl compatible regular expressions. This means that you should be
+cautious of special regular expression characters. See the Perl
+documentation\footnote{\url{http://www.perldoc.com/perl5.8.0/pod/perlre.html}}
+for further information about how to use regular expressions.
+
+\subsection{Gene Ontology}
+
+The second type of search available is a Gene Ontology search. It
+takes a vector of Gene Ontology identifiers and maps them onto a
+list of probe ids. Gene Ontology is a tree and you can include or
+exclude descendents with the \verb+descendents+ argument. The search
+also supports the \verb+logic+ argument. Because the Bioconductor
+metadata packages include pre-indexed Gene Ontology mappings, this
+search is very fast.
+
+The input format for Gene Ontology ids is very flexible. You may
+use numeric or character vectors, either excluding or including
+the "GO:" prefix and leading zeros.
+
+<<>>=
+aafSearchGO("hgu95av2", c("GO:0000002", "GO:0000008"))
+aafSearchGO("hgu95av2", c("2", "8"))
+aafSearchGO("hgu95av2", c(2, 8))
+@
+
+A good source for finding relevant Gene Ontology identifiers is
+the AmiGO website\footnote{\url{http://www.godatabase.org/}},
+operated by the Gene Ontology Consortium.
 
 \end{document}
