@@ -1,28 +1,27 @@
-\name{chkPkg}
-\alias{chkPkg}
+\name{chkPkgVer}
+\alias{chkPkgVer}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{ A Function to Check for Installed Annotation Packages }
+\title{ A Function to Check for Annotation Package Versions }
 \description{
-  This function checks for installed annotation packages. This is an
+  This function checks the version of annotation packages to ensure that
+  they are consistent with the current version of annaffy. This is an
   internal function and should not be called by end-users.
 }
 \usage{
-chkPkg(pkg)
+chkPkgVer(input)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{pkg}{ A chip-level annotation package.}
+  \item{input}{ An annotation package.}
 }
 \details{
   This function checks the installed annotation packages, including
   \code{GO} and \code{KEGG} packages.
 }
 \value{
-  \item{installable}{Boolean indicating if the library is
-    user-writeable}
-  \item{need.pkg}{Boolean indicating if packages need to be downloaded}
-   \item{which.pkg}{Vector of packages needed}
-}
+  \item{test}{Boolean indicating if the package is compatible with the
+    current version of annaffy.}
+ }
 
 \author{ James W. MacDonald <jmacdon@med.umich.edu>}
 

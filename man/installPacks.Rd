@@ -8,14 +8,13 @@
   not be called by the end-user.
 }
 \usage{
-installPacks(object, message, noinstall, install = TRUE)
+installPacks(object, message, noinstall)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{ A list passed from \code{chkPkgs} }
   \item{message}{ Message to post if the packages are to be installed. }
   \item{noinstall}{ Message to post if user decides not to install.}
-  \item{install}{ Boolean describing if packages are to be installed. }
 }
 
 \value{

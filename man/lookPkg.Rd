@@ -17,16 +17,14 @@ lookPkg(pkg, verbose = FALSE)
 }
 
 \value{
- 
-  \item{release }{Boolean indicating if release versions are available.}
-  \item{devel }{Boolean indicating if development versions are
-    available.}
-  \item{repList}{A \code{\link[reposTools]{repList}}}
+ \item{develOK}{A boolean indicating if devel or release packages should
+   be downloaded}
+ \item{repList}{A \code{\link[reposTools]{repList}}}
   \item{pkg}{A list of package names}
   \item{type}{The type of package to download, \code{Win32} for windows
     and \code{Source} for Unix or MacOS.}
-  \item{dev.ver}{The version number of the devel packages.}
-  \item{rel.ver}{The version number of the release packages.}
+  \item{fail}{A boolean indicating if there appears to be a compatible
+    package version on the BioC website.}
 }
 
 \author{ James W. MacDonald <jmacdon@med.umich.edu>}
