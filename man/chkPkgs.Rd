@@ -17,14 +17,16 @@ chkPkgs(pkg)
   \item{pkg}{ The chip-level annotation package}
 }
 \details{
-  By default, these functions also check for the version and
-  availability of the \code{GO} and \code{KEGG} packages.
+  This function checks for the correct chip-level package, and if it is
+  not installed will download and install. In the case that there are
+  two versions of the same package installed, the function will return
+  the library location of the package with the correct version.
 }
 \value{
-  This function does not return anything. It is only called for the side
-  effect of checking and getting annotation packages.
+  This function doesn't return anything; it is only called for its side
+  effect of loading or installing a chip-level annotation package.
 }
 
-\author{ James W. MacDonald <jmacdon@med.umich.edu> }
+\author{ James W. MacDonald <jmacdon@med.umich.edu> and Jeff Gentry <jgentry@jimmy.harvard.edu>}
 
 \keyword{internal}
