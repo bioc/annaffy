@@ -9,7 +9,7 @@ require("KEGG") || stop("Couldn't load package KEGG")
 
     environment <- paste(chip, type, sep="")
 
-    do.call("multiget", list(probeids, as.name(environment)))
+    do.call("mget", list(probeids, as.name(environment), ifnotfound=NA))
 }
 
 .aaf.character <- function(probeids, chip, type, class) {
@@ -556,7 +556,7 @@ aafPathway <- function(probeids, chip) {
             results[[i]] <- list()
         }
         else {
-            name <- multiget(pathway, KEGGPATHID2NAME)
+            name <- mget(pathway, KEGGPATHID2NAME, ifnotfound=NA)
             enzyme <- enzymes[[i]][1]
             if( is.na(enzyme) )
                 enzyme <- character(0)
