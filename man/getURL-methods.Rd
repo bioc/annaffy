@@ -3,6 +3,7 @@
 \title{Methods for function getURL}
 \alias{getURL-methods}
 \alias{getURL}
+\alias{getURL,ANY-method}
 \description{
   Methods to get a URL link to a web resource for an object.
 }

@@ -1,6 +1,7 @@
 \name{aafGenBank-class}
 \docType{class}
 \alias{aafGenBank-class}
+\alias{getURL,aafGenBank-method}
 \title{Class aafGenBank, a class for GenBank accession numbers}
 \description{
   An abstraction for GenBank accession numbers from Bioconductor data packages.

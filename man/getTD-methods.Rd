@@ -3,6 +3,7 @@
 \title{Methods for function getTD}
 \alias{getTD-methods}
 \alias{getTD}
+\alias{getTD,ANY-method}
 \description{
   Methods to get an HTML table cell representation of an object.
 }

@@ -1,6 +1,6 @@
 Package: annaffy
-Version: 1.0.1
-Date: 2003-08-25
+Version: 1.0.2
+Date: 2003-09-03
 Title: Annotation tools for Affymetrix biological metadata
 Author: Colin A. Smith <annaffy@colinsmith.org>
 Maintainer: Colin A. Smith <annaffy@colinsmith.org>

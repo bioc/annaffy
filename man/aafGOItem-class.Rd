@@ -2,6 +2,10 @@
 \docType{class}
 \alias{aafGOItem-class}
 \alias{aafGOItem}
+\alias{getText,aafGOItem-method}
+\alias{getURL,aafGOItem-method}
+\alias{getHTML,aafGOItem-method}
+\alias{show,aafGOItem-method}
 \title{Class aafGOItem, a class for gene ontology id elements}
 \description{
   An abstraction for gene ontology id elements from Bioconductor

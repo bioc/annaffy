@@ -2,6 +2,10 @@
 \docType{class}
 \alias{aafPathwayItem-class}
 \alias{aafPathwayItem}
+\alias{getText,aafPathwayItem-method}
+\alias{getURL,aafPathwayItem-method}
+\alias{getHTML,aafPathwayItem-method}
+\alias{show,aafPathwayItem-method}
 \title{Class aafPathwayItem, a class for KEGG pathway id elements}
 \description{
   An abstraction for KEGG pathway id elements from Bioconductor

@@ -2,15 +2,21 @@
 \docType{class}
 \alias{aafTable-class}
 \alias{probeids}
+\alias{probeids,aafTable-method}
 \alias{probeids<-}
-\alias{colnames}
-\alias{colnames<-}
+\alias{probeids<-,aafTable-method}
+\alias{colnames,aafTable,missing,missing-method}
+\alias{colnames<-,aafTable-method}
 \alias{dim.aafTable}
 \alias{merge.aafTable}
 \alias{rbind.aafTable}
+\alias{[,aafTable-method}
+\alias{[[,aafTable-method}
 \alias{$.aafTable}
 \alias{saveHTML}
+\alias{saveHTML,aafTable-method}
 \alias{saveText}
+\alias{saveText,aafTable-method}
 \title{Class aafTable, a tabular microarray data class}
 \description{
   A class for storing and flexible output of microarray data to

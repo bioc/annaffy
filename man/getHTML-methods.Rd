@@ -3,6 +3,7 @@
 \title{Methods for function getHTML}
 \alias{getHTML-methods}
 \alias{getHTML}
+\alias{getHTML,ANY-method}
 \description{
   Methods to get an HTML representation of an object.
 }

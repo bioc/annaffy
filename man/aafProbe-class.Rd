@@ -1,6 +1,7 @@
 \name{aafProbe-class}
 \docType{class}
 \alias{aafProbe-class}
+\alias{getURL,aafProbe-method}
 \title{Class aafProbe, a class for Probe ids}
 \description{
   An abstraction for Affymetrix ProbeSet ids.

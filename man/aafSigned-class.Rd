@@ -2,6 +2,8 @@
 \docType{class}
 \alias{aafSigned-class}
 \alias{aafSigned}
+\alias{getTD,aafSigned-method}
+\alias{getCSS,aafSigned-method}
 \title{Class aafSigned, a class for signed numerical data}
 \description{
   A class for displaying signed numerical data with different styles

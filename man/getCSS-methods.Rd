@@ -3,6 +3,7 @@
 \title{Methods for function getCSS}
 \alias{getCSS-methods}
 \alias{getCSS}
+\alias{getCSS,ANY-method}
 \description{
   Methods to get relevant stylesheet lines for an object.
 }

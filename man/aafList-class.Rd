@@ -2,6 +2,13 @@
 \docType{class}
 \alias{aafList-class}
 \alias{aafList}
+\alias{getText,aafList-method}
+\alias{getURL,aafList-method}
+\alias{getHTML,aafList-method}
+\alias{getTD,aafList-method}
+\alias{getCSS,aafList-method}
+\alias{[,aafList-method}
+\alias{show,aafList-method}
 \title{Class aafList, a specialized subclass of list}
 \description{
   A class for lists of annotation data objects.

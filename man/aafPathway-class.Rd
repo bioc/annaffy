@@ -1,6 +1,11 @@
 \name{aafPathway-class}
 \docType{class}
 \alias{aafPathway-class}
+\alias{getText,aafPathway-method}
+\alias{getURL,aafPathway-method}
+\alias{getHTML,aafPathway-method}
+\alias{getTD,aafPathway-method}
+\alias{getCSS,aafPathway-method}
 \title{Class aafPathway, a class for KEGG pathway ids}
 \description{
   An abstraction for KEGG pathway ids from Bioconductor data

@@ -1,6 +1,9 @@
 \name{aafCytoband-class}
 \docType{class}
 \alias{aafCytoband-class}
+\alias{getText,aafCytoband-method}
+\alias{getURL,aafCytoband-method}
+\alias{show,aafCytoband-method}
 \title{Class aafCytoband, a class for cytoband data}
 \description{
   An abstraction for cytoband data from Bioconductor data packages.

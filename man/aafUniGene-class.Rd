@@ -1,6 +1,7 @@
 \name{aafUniGene-class}
 \docType{class}
 \alias{aafUniGene-class}
+\alias{getURL,aafUniGene-method}
 \title{Class aafUniGene, a class for UniGene cluster ids}
 \description{
   An abstraction for UniGene cluster ids from Bioconductor data packages.

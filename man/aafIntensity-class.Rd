@@ -2,6 +2,7 @@
 \docType{class}
 \alias{aafIntensity-class}
 \alias{aafIntensity}
+\alias{getTD,aafIntensity-method}
 \title{Class aafIntensity, a class for gene expression values}
 \description{
   A class for displaying gene expression values with a green

@@ -1,6 +1,11 @@
 \name{aafGO-class}
 \docType{class}
 \alias{aafGO-class}
+\alias{getText,aafGO-method}
+\alias{getURL,aafGO-method}
+\alias{getHTML,aafGO-method}
+\alias{getTD,aafGO-method}
+\alias{getCSS,aafGO-method}
 \title{Class aafGO, a class for gene ontology ids}
 \description{
   An abstraction for gene ontology ids from Bioconductor data

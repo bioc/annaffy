@@ -3,6 +3,7 @@
 \title{Methods for function getText}
 \alias{getText-methods}
 \alias{getText}
+\alias{getText,ANY-method}
 \description{
   Methods to get a textual representation of an object.
 }

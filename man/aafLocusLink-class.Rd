@@ -1,6 +1,7 @@
 \name{aafLocusLink-class}
 \docType{class}
 \alias{aafLocusLink-class}
+\alias{getURL,aafLocusLink-method}
 \title{Class aafLocusLink, a class for LocusLink ids}
 \description{
   An abstraction for LocusLink ids from Bioconductor data packages.
