@@ -114,7 +114,7 @@
     
     }, envir = where)
     
-    assign("aafTableFrame", function(frame, colnames = colnames(frame), 
+    assign("aafTableFrame", function(frame, colnames = names(frame), 
                                      probeids = row.names(frame), signed = FALSE) {
     
         len <- dim(frame)[1]
@@ -160,7 +160,7 @@
     assign("aafTableInt", function(exprSet, colnames = sampleNames(exprSet), 
                                    probeids = geneNames(exprSet)) {
         
-        range = match(probeids, geneNames(exprSet))
+        range <- match(probeids, geneNames(exprSet))
         expr <- exprs(exprSet)
         table <- vector("list", dim(expr)[2])
         for (col in 1:length(table)) {
@@ -381,7 +381,8 @@
         for (i in 1:length(range))
             cat("<tr>\n", rows[i], "</tr>\n", file = outfile, sep = "")
         
-        cat("</table>", "</body>", "</html>", file = outfile, sep = "\n")
+        cat("</table>", paste("<p>", length(range), " Genes</p>", sep = ""), 
+            "</body>", "</html>", file = outfile, sep = "\n")
         close(outfile)
         
         if (open)
