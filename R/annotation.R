@@ -4,14 +4,12 @@ require("KEGG") || stop("Couldn't load package KEGG")
 
 .aaf.raw <- function(probeids, chip, type) {
 
-    chkPkgs(chip)
-
     require(chip, character.only = TRUE) ||
         stop(paste("Couldn't load data package", chip))
 
     environment <- paste(chip, type, sep="")
 
-    do.call("mget", list(probeids, as.name(environment), ifnotfound=NA))
+    do.call("multiget", list(probeids, as.name(environment)))
 }
 
 .aaf.character <- function(probeids, chip, type, class) {
@@ -558,7 +556,7 @@ aafPathway <- function(probeids, chip) {
             results[[i]] <- list()
         }
         else {
-            name <- mget(pathway, KEGGPATHID2NAME, ifnotfound=NA)
+            name <- multiget(pathway, KEGGPATHID2NAME)
             enzyme <- enzymes[[i]][1]
             if( is.na(enzyme) )
                 enzyme <- character(0)
