@@ -54,6 +54,9 @@ require("KEGG") || stop("Couldn't load package KEGG")
     if (is.na(num$Ontology))
         return(list())
     
+    if (!exists(num$GOID, GOTERM))
+        return(list())
+
     if (num$Ontology == "BP")
         return(list(name = get(num$GOID, GOTERM), 
                     type = "Biological Process"))
