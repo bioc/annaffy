@@ -11,3 +11,5 @@ Description: Functions for handling data from Bioconductor Affymetrix
   including experimental data and URL links to many online databases.
   Allows searching biological metadata using various criteria.
 License: LGPL
+ReleaseLevel: devel
+
