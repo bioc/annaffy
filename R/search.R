@@ -1,7 +1,7 @@
 aafSearchText <- function(chip, colnames, text, logic = "OR") {
 	
-	if (! do.call("require", list(chip)))
-        stop(paste("Data library couldn't be loaded:", chip))
+	require(chip, character.only = TRUE) ||
+        stop(paste("Couldn't load data package", chip))
 
     environment <- paste(chip, "SYMBOL", sep="")
 
@@ -27,8 +27,8 @@ aafSearchText <- function(chip, colnames, text, logic = "OR") {
 
 aafSearchGO <- function(chip, ids, descendents = TRUE, logic = "OR") {
 	
-	if (! do.call("require", list(chip)))
-        stop(paste("Data library couldn't be loaded:", chip))
+	require(chip, character.only = TRUE) ||
+        stop(paste("Couldn't load data package", chip))
 
     if (descendents)
     	environment <- paste(chip, "GO2ALLPROBES", sep="")

@@ -1,9 +1,5 @@
 .First.lib <- function (libname, pkgname)
 {
-    require(Biobase)
-    require(GO)
-    require(KEGG)
-
     path = .path.package(pkgname)
     where <- as.environment(match(paste("package:", pkgname, sep = ""),search()))
     dataPath = file.path(path, "data")

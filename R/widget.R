@@ -2,7 +2,7 @@ selectorWidget <- function(options, selected = character(0), title = "Selector",
                            ordersel = FALSE, ordernsel = FALSE, 
                            height = max(10,min(20,length(options)))) {
     
-    require(tcltk) || stop("requires the package tcltk")
+    require("tcltk") || stop("Couldn't load package tcltk")
     
     move <- function(from, to, order) {
         while (length(index <- as.integer(tkcurselection(from)))) {

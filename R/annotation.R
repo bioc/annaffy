@@ -1,7 +1,11 @@
+require("Biobase") || stop("Couldn't load package Biobase")
+require("GO") || stop("Couldn't load package GO")
+require("KEGG") || stop("Couldn't load package KEGG")
+
 .aaf.raw <- function(probeids, chip, type) {
 
-    if (! do.call("require", list(chip)))
-        stop(paste("Data library couldn't be loaded:", chip))
+    require(chip, character.only = TRUE) ||
+        stop(paste("Couldn't load data package", chip))
 
     environment <- paste(chip, type, sep="")
 

@@ -19,7 +19,7 @@
         do.call("save", list(newenvname, file = paste(newenvname, ".rda", sep = "")))
     }
     
-    require(hgu95av2)
+    require("hgu95av2")
     
     probeids <- c("32547_at", "720_at", "40142_at", "38903_at", "34834_at", 
                   "37049_g_at", "2021_s_at", "38375_at", "41770_at",
