@@ -67,9 +67,9 @@ aaf.handler <- function (probeids, chip, name)
 # request to the appropriate handler function.
 
     if (missing(probeids))
-	c("Probe", "Symbol", "Description", "Function", "Chromosome",
-	  "Chromosome Location", "GenBank", "LocusLink", "Cytoband",
-	  "UniGene", "PubMed", "Gene Ontology", "Pathway")
+    c("Probe", "Symbol", "Description", "Function", "Chromosome",
+      "Chromosome Location", "GenBank", "LocusLink", "Cytoband",
+      "UniGene", "PubMed", "Gene Ontology", "Pathway")
     else
         switch(name,
                Probe = aafProbe(probeids),
@@ -87,618 +87,545 @@ aaf.handler <- function (probeids, chip, name)
                Pathway = aafPathway(probeids, chip))
 }
 
-.initAnnotation <- function(where) {
-
 ## Set generic methods
 
-    if( !isGeneric("getText") )
-        setGeneric("getText", function(object) standardGeneric("getText"),
-                   where = where )
-    
-    if( !isGeneric("getURL") )
-        setGeneric("getURL", function(object) standardGeneric("getURL"),
-                   where = where )
-    
-    if( !isGeneric("getHTML") )
-        setGeneric("getHTML", function(object) standardGeneric("getHTML"),
-                   where = where )
-    
-    if( !isGeneric("getTD") )
-        setGeneric("getTD", function(object) standardGeneric("getTD"),
-                   where = where )
-    
-    if( !isGeneric("getCSS") )
-        setGeneric("getCSS", function(object) standardGeneric("getCSS"),
-                   where = where )
+if( !isGeneric("getText") )
+    setGeneric("getText", function(object) standardGeneric("getText"))
+
+if( !isGeneric("getURL") )
+    setGeneric("getURL", function(object) standardGeneric("getURL"))
+
+if( !isGeneric("getHTML") )
+    setGeneric("getHTML", function(object) standardGeneric("getHTML"))
+
+if( !isGeneric("getTD") )
+    setGeneric("getTD", function(object) standardGeneric("getTD"))
+
+if( !isGeneric("getCSS") )
+    setGeneric("getCSS", function(object) standardGeneric("getCSS"))
 
 ## Define methods for vector class
 
-    setMethod("getText", "ANY", function(object) {
+setMethod("getText", "ANY", function(object) {
+
+    if( !length(object) )
+        return("")
+    return(paste(object, collapse = ", "))
+})
+
+setMethod("getURL", "ANY", function(object) {
+
+    return(character(0))
+})
+
+setMethod("getHTML", "ANY", function(object) {
     
-        if( !length(object) )
-            return("")
-        return(paste(object, collapse = ", "))
+    if( is.double(object) )
+        object <- signif(object, getOption("sigfigs"))
+    if( !nchar(text <- getText(object)) )
+        return("")
+    if( length(url <- getURL(object)) )
+        return(paste(paste("<a href=\"", url, "\">", text, "</a>", sep = ""), collapse = " "))
+    else
+        return(text)
+})
+
+setMethod("getTD", "ANY", function(object) {
     
-    }, where = where)
+    html <- getHTML(object)
+    if (!nchar(html))
+       html <- "&nbsp;"
     
-    setMethod("getURL", "ANY", function(object) {
+    return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))       
+})
+
+setMethod("getCSS", "ANY", function(object) {
     
-        return(character(0))
-    
-    }, where = where)
-    
-    setMethod("getHTML", "ANY", function(object) {
-        
-        if( is.double(object) )
-            object <- signif(object, getOption("sigfigs"))
-        if( !nchar(text <- getText(object)) )
-            return("")
-        if( length(url <- getURL(object)) )
-            return(paste(paste("<a href=\"", url, "\">", text, "</a>", sep = ""), collapse = " "))
-        else
-            return(text)
-        
-    }, where = where)
-    
-    setMethod("getTD", "ANY", function(object) {
-        
-        html <- getHTML(object)
-        if (!nchar(html))
-           html <- "&nbsp;"
-        
-        return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))       
-    
-    }, where = where)
-    
-    setMethod("getCSS", "ANY", function(object) {
-        
-        return(character(0))       
-    
-    }, where = where)
+    return(character(0))       
+})
 
 ## Define class aafList
+
+setClass("aafList", "list", prototype = list())
+
+setMethod("getText", "aafList", function(object) {
     
-    setClass("aafList", "list", prototype = list(), 
-             where = where)
+    if( !length(object) )
+        return(character(0))
+    result <- character(length(object))
+    for(i in 1:length(object))
+        result[i] <- getText(object[[i]])
+    return(result)
+})
+
+setMethod("getURL", "aafList", function(object) {
+
+    result <- character(0)
+    for (i in 1:length(object))
+        result <- c(result, getURL(object[[i]]))
+    return(result)
+})
+
+setMethod("getHTML", "aafList", function(object) {
     
-    setMethod("getText", "aafList", function(object) {
-        
-        if( !length(object) )
-            return(character(0))
-        result <- character(length(object))
-        for(i in 1:length(object))
-            result[i] <- getText(object[[i]])
-        return(result)
-        
-    }, where = where)
+    if( !length(object) )
+        return(character(0))
+    result <- character(length(object))
+    for(i in 1:length(object))
+        result[i] <- getHTML(object[[i]])
+    return(result)
+})
+
+setMethod("getTD", "aafList", function(object) {
     
-    setMethod("getURL", "aafList", function(object) {
+    if( !length(object) )
+        return(character(0))
+    result <- character(length(object))
+    for(i in 1:length(object))
+        result[i] <- getTD(object[[i]])
+    return(result)
+})
+
+setMethod("getCSS", "aafList", function(object) {
     
-        result <- character(0)
-        for (i in 1:length(object))
-            result <- c(result, getURL(object[[i]]))
-        return(result)
+    return(getCSS(object[[1]]))
+})
+
+setMethod("[", "aafList", function(x, i, j, ..., drop = F) {
+
+    result <- x@.Data[i]
+    class(result) <- class(x)
+    return(result)
+})
+
+setMethod("show", "aafList", function(object) {
+
+    frame <- parent.frame()
+    if( exists("showHistory", frame) )
+        history <- get("showHistory", frame)
+    else
+        history <- integer(0)
     
-    }, where = where)
-    
-    setMethod("getHTML", "aafList", function(object) {
-        
-        if( !length(object) )
-            return(character(0))
-        result <- character(length(object))
-        for(i in 1:length(object))
-            result[i] <- getHTML(object[[i]])
-        return(result)
-        
-    }, where = where)
-    
-    setMethod("getTD", "aafList", function(object) {
-        
-        if( !length(object) )
-            return(character(0))
-        result <- character(length(object))
-        for(i in 1:length(object))
-            result[i] <- getTD(object[[i]])
-        return(result)
-        
-    }, where = where)
-    
-    setMethod("getCSS", "aafList", function(object) {
-        
-        return(getCSS(object[[1]]))
-    
-    }, where = where)
-    
-    setMethod("[", "aafList", function(x, i, j, ..., drop = F) {
-    
-        result <- x@.Data[i]
-        class(result) <- class(x)
-        return(result)
-        
-    }, where=where)
-    
-    setMethod("show", "aafList", function(object) {
-    
-        frame <- parent.frame()
-        if( exists("showHistory", frame) )
-            history <- get("showHistory", frame)
-        else
-            history <- integer(0)
-        
-        cat("An object of class \"", class(object), "\"\n", sep = "")
-        if( length(object) )
-            for(i in 1:length(object)) {
-                showHistory <- c(history, i)
-                cat("[[", paste(showHistory, collapse = "]][["), "]]\n", sep = "")
-                show(object[[i]])
-                cat("\n")
-            }
-        else
-            cat("list()\n", sep = "")
-    
-    }, where = where)
+    cat("An object of class \"", class(object), "\"\n", sep = "")
+    if( length(object) )
+        for(i in 1:length(object)) {
+            showHistory <- c(history, i)
+            cat("[[", paste(showHistory, collapse = "]][["), "]]\n", sep = "")
+            show(object[[i]])
+            cat("\n")
+        }
+    else
+        cat("list()\n", sep = "")
+})
 
 ## Define class aafProbe
+
+setClass("aafProbe", "character", prototype = character(0))
+
+aafProbe <- function(probeids) {
     
-    setClass("aafProbe", "character", prototype = character(0), 
-             where = where)
+    probes <- as.list(probeids)
+    for(i in 1:length(probes))
+        class(probes[[i]]) <- "aafProbe"
     
-    assign("aafProbe", function(probeids) {
-        
-        probes <- as.list(probeids)
-        for(i in 1:length(probes))
-            class(probes[[i]]) <- "aafProbe"
-        
-        return(new("aafList", probes))
+    return(new("aafList", probes))
+}
+
+setMethod("getURL", "aafProbe", function(object) {
     
-    }, envir = where)
+    url <- "https://www.affymetrix.com/LinkServlet?&probeset="
     
-    setMethod("getURL", "aafProbe", function(object) {
-        
-        url <- "https://www.affymetrix.com/LinkServlet?&probeset="
-        
-        if( !length(object) )
-            return(character(0))
-        return(paste(url, object, sep = ""))
-        
-    }, where = where)
-    
+    if( !length(object) )
+        return(character(0))
+    return(paste(url, object, sep = ""))
+})
+
 ## Define class aafSymbol
+
+setClass("aafSymbol", "character", prototype = character(0))
+
+aafSymbol <- function(probeids, chip) {
     
-    setClass("aafSymbol", "character", prototype = character(0), 
-             where = where)
-    
-    assign("aafSymbol", function(probeids, chip) {
-        
-        return(.aaf.character(probeids, chip, "SYMBOL", "aafSymbol"))
-    
-    }, envir = where)
-    
+    return(.aaf.character(probeids, chip, "SYMBOL", "aafSymbol"))
+}
+
 ## Define class aafDescription
+
+setClass("aafDescription", "character", prototype = character(0))
+
+aafDescription <- function(probeids, chip) {
     
-    setClass("aafDescription", "character", prototype = character(0), 
-             where = where)
-    
-    assign("aafDescription", function(probeids, chip) {
-        
-        return(.aaf.character(probeids, chip, "GENENAME", "aafDescription"))
-    
-    }, envir = where)
-    
+    return(.aaf.character(probeids, chip, "GENENAME", "aafDescription"))
+}
+
 ## Define class aafFunction
+
+setClass("aafFunction", "character", prototype = character(0))
+
+aafFunction <- function(probeids, chip) {
     
-    setClass("aafFunction", "character", prototype = character(0), 
-             where = where)
-    
-    assign("aafFunction", function(probeids, chip) {
-        
-        return(.aaf.character(probeids, chip, "SUMFUNC", "aafFunction"))
-    
-    }, envir = where)
-    
+    return(.aaf.character(probeids, chip, "SUMFUNC", "aafFunction"))
+}
+
 ## Define class aafChromosome
+
+setClass("aafChromosome", "character", prototype = character(0))
+
+aafChromosome <- function(probeids, chip) {
     
-    setClass("aafChromosome", "character", prototype = character(0), 
-             where = where)
-    
-    assign("aafChromosome", function(probeids, chip) {
-        
-        return(.aaf.character(probeids, chip, "CHR", "aafChromosome"))
-    
-    }, envir = where)
-    
+    return(.aaf.character(probeids, chip, "CHR", "aafChromosome"))
+}
+
 ## Define class aafChromLoc
+
+setClass("aafChromLoc", "integer", prototype = integer(0))
+
+aafChromLoc <- function(probeids, chip) {
     
-    setClass("aafChromLoc", "integer", prototype = integer(0), 
-             where = where)
-    
-    assign("aafChromLoc", function(probeids, chip) {
-        
-        return(.aaf.integer(probeids, chip, "CHRLOC", "aafChromLoc"))
-    
-    }, envir = where)
-    
+    return(.aaf.integer(probeids, chip, "CHRLOC", "aafChromLoc"))
+}
+
 ## Define class aafGenBank
+
+setClass("aafGenBank", "character", prototype = character(0))
+
+aafGenBank <- function(probeids, chip) {
     
-    setClass("aafGenBank", "character", prototype = character(0), 
-             where = where)
+    return(.aaf.character(probeids, chip, "ACCNUM", "aafGenBank"))
+}
+
+setMethod("getURL", "aafGenBank", function(object) {
+
+    url <- "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=search&db=nucleotide&term="
+    urlsuffix <- "%5BACCN%5D&doptcmdl=GenBank"
     
-    assign("aafGenBank", function(probeids, chip) {
-        
-        return(.aaf.character(probeids, chip, "ACCNUM", "aafGenBank"))
-    
-    }, envir = where)
-    
-    setMethod("getURL", "aafGenBank", function(object) {
-    
-        url <- "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=search&db=nucleotide&term="
-        urlsuffix <- "%5BACCN%5D&doptcmdl=GenBank"
-        
-        if( !length(object) )
-            return(character(0))
-        return(paste(url, object, urlsuffix, sep = ""))
-    
-    }, where = where)
+    if( !length(object) )
+        return(character(0))
+    return(paste(url, object, urlsuffix, sep = ""))
+})
 
 ## Define class aafLocusLink
+
+setClass("aafLocusLink", "integer", prototype = integer(0))
+
+aafLocusLink <- function(probeids, chip) {
     
-    setClass("aafLocusLink", "integer", prototype = integer(0), 
-             where = where)
+    return(.aaf.integer(probeids, chip, "LOCUSID", "aafLocusLink"))
+}
+
+setMethod("getURL", "aafLocusLink", function(object) {
     
-    assign("aafLocusLink", function(probeids, chip) {
-        
-        return(.aaf.integer(probeids, chip, "LOCUSID", "aafLocusLink"))
+    url <- "http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l="
     
-    }, envir = where)
-    
-    setMethod("getURL", "aafLocusLink", function(object) {
-        
-        url <- "http://www.ncbi.nlm.nih.gov/LocusLink/LocRpt.cgi?l="
-        
-        if( !length(object) )
-            return(character(0))
-        return(paste(url, object, sep = ""))
-        
-    }, where = where)
-    
+    if( !length(object) )
+        return(character(0))
+    return(paste(url, object, sep = ""))
+})
+
 ## Define class aafCytoband
+
+setClass("aafCytoband", representation(band = "character",
+                                       genbank = "character"),
+         prototype = list(band = character(0),
+                          genbank = character(0)))
+
+aafCytoband <- function(probeids, chip) {
     
-    setClass("aafCytoband", representation(band = "character",
-                                           genbank = "character"),
-             prototype = list(band = character(0),
-                              genbank = character(0)), where = where)
+    band <- .aaf.raw(probeids, chip, "MAP")
+    genbank <- .aaf.raw(probeids, chip, "ACCNUM")
+    result <- vector("list", length(probeids))
+    navals <- is.na(band)
+    result[which(navals)] <- list(new("aafCytoband"))
+    result[which(!navals)] <- list(list())
+    for(i in which(!navals))
+        attributes(result[[i]]) <- list(band = band[[i]], genbank = genbank[[i]], class = "aafCytoband")
+    class(result) <- "aafList"
     
-    assign("aafCytoband", function(probeids, chip) {
-        
-        band <- .aaf.raw(probeids, chip, "MAP")
-        genbank <- .aaf.raw(probeids, chip, "ACCNUM")
-        result <- vector("list", length(probeids))
-        navals <- is.na(band)
-        result[which(navals)] <- list(new("aafCytoband"))
-        result[which(!navals)] <- list(list())
-        for(i in which(!navals))
-            attributes(result[[i]]) <- list(band = band[[i]], genbank = genbank[[i]], class = "aafCytoband")
-        class(result) <- "aafList"
-        
-        return(result)
-        
-    }, envir = where)
+    return(result)
+}
+
+setMethod("getText", "aafCytoband", function(object) {
+
+    if( !length(object@band) )
+        return("")
+    return(object@band)
+})
+
+setMethod("getURL", "aafCytoband", function(object) {
+
+    url <- "http://www.ncbi.nlm.nih.gov/mapview/map_search.cgi?direct=on&query="
+    urlsuffix <- "%5BACCN%5D"
     
-    setMethod("getText", "aafCytoband", function(object) {
+    if( !length(object@band) )
+        return(character(0))
+    return(paste(url, object@genbank, urlsuffix, sep = ""))
+})
+
+setMethod("show", "aafCytoband", function(object) {
     
-        if( !length(object@band) )
-            return("")
-        return(object@band)
-    
-    }, where = where)
-    
-    setMethod("getURL", "aafCytoband", function(object) {
-    
-        url <- "http://www.ncbi.nlm.nih.gov/mapview/map_search.cgi?direct=on&query="
-        urlsuffix <- "%5BACCN%5D"
-        
-        if( !length(object@band) )
-            return(character(0))
-        return(paste(url, object@genbank, urlsuffix, sep = ""))
-    
-    }, where = where)
-    
-    setMethod("show", "aafCytoband", function(object) {
-        
-        cat("An object of class \"aafCytoband\"\n")
-        cat("@band    ", object@band, "\n", sep = "\"")
-        cat("@genbank ", object@genbank, "\n", sep = "\"")
-        
-    }, where = where)
+    cat("An object of class \"aafCytoband\"\n")
+    cat("@band    ", object@band, "\n", sep = "\"")
+    cat("@genbank ", object@genbank, "\n", sep = "\"")
+})
 
 ## Define class aafUniGene
+
+setClass("aafUniGene", "character", prototype = character(0))
+
+aafUniGene <- function(probeids, chip) {
     
-    setClass("aafUniGene", "character", prototype = character(0), 
-             where = where)
+    return(.aaf.character(probeids, chip, "UNIGENE", "aafUniGene"))
+}
+
+setMethod("getURL", "aafUniGene", function(object) {
     
-    assign("aafUniGene", function(probeids, chip) {
-        
-        return(.aaf.character(probeids, chip, "UNIGENE", "aafUniGene"))
+    url <- "http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG="
+    urlinter <- "&CID="
     
-    }, envir = where)
-    
-    setMethod("getURL", "aafUniGene", function(object) {
-        
-        url <- "http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG="
-        urlinter <- "&CID="
-        
-        if( !length(object) )
-            return(character(0))
-        return(paste(url, sub("[.]", urlinter, object), sep = ""))
-        
-    }, where = where)
+    if( !length(object) )
+        return(character(0))
+    return(paste(url, sub("[.]", urlinter, object), sep = ""))
+})
 
 ## Define class aafPubMed
+
+setClass("aafPubMed", "integer", prototype = integer(0))
+
+aafPubMed <- function(probeids, chip) {
     
-    setClass("aafPubMed", "integer", prototype = integer(0), 
-             where = where)
+    return(.aaf.integer(probeids, chip, "PMID", "aafPubMed"))
+}
+
+setMethod("getURL", "aafPubMed", function(object) {
     
-    assign("aafPubMed", function(probeids, chip) {
-        
-        return(.aaf.integer(probeids, chip, "PMID", "aafPubMed"))
+    url <- "http://www.ncbi.nih.gov/entrez/query.fcgi?tool=bioconductor&cmd=Retrieve&db=PubMed&list_uids="
     
-    }, envir = where)
+    if( !length(object) )
+        return(character(0))
+    return(paste(url, paste(object, collapse = "%2c"), sep = ""))
+})
+
+setMethod("getHTML", "aafPubMed", function(object) {
     
-    setMethod("getURL", "aafPubMed", function(object) {
-        
-        url <- "http://www.ncbi.nih.gov/entrez/query.fcgi?tool=bioconductor&cmd=Retrieve&db=PubMed&list_uids="
-        
-        if( !length(object) )
-            return(character(0))
-        return(paste(url, paste(object, collapse = "%2c"), sep = ""))
-        
-    }, where = where)
+    if( !length(object) )
+        return("")
+    return(paste("<a href=\"", getURL(object), "\">", length(object), "</a>", sep = ""))
+})
+
+setMethod("getCSS", "aafPubMed", function(object) {
     
-    setMethod("getHTML", "aafPubMed", function(object) {
-        
-        if( !length(object) )
-            return("")
-        return(paste("<a href=\"", getURL(object), "\">", length(object), "</a>", sep = ""))
-        
-    }, where = where)
-    
-    setMethod("getCSS", "aafPubMed", function(object) {
-        
-        return("td.aafPubMed { text-align: center }")       
-    
-    }, where = where)
-    
+    return("td.aafPubMed { text-align: center }")       
+})
+
 ## Define class aafGO
+
+setClass("aafGO", "aafList", prototype = list())
+
+aafGO <- function(probeids, chip) {
     
-    setClass("aafGO", "aafList", prototype = list(), 
-             where = where)
-    
-    assign("aafGO", function(probeids, chip) {
-        
-        gos <- .aaf.raw(probeids, chip, "GO")
-        results <- vector("list", length(probeids))
-        attrs <- list(class = "aafGO")
-        for(i in 1:length(probeids)) {
-            go <- gos[[i]]
-            results[[i]] <- list()
-            if( !is.na(go[1]) ) {
-                for(j in 1:length(go)) {
-                    nametype <- .aaf.goterm(go[j])
-                    if( length(nametype) ) {
-                        result <- list()
-                        attributes(result) <- list(id = go[j], name = nametype$name, type = nametype$type, evid = names(go)[j], class = "aafGOItem")
-                        results[[i]] <- c(results[[i]], list(result))
-                    }
+    gos <- .aaf.raw(probeids, chip, "GO")
+    results <- vector("list", length(probeids))
+    attrs <- list(class = "aafGO")
+    for(i in 1:length(probeids)) {
+        go <- gos[[i]]
+        results[[i]] <- list()
+        if( !is.na(go[1]) ) {
+            for(j in 1:length(go)) {
+                nametype <- .aaf.goterm(go[j])
+                if( length(nametype) ) {
+                    result <- list()
+                    attributes(result) <- list(id = go[j], name = nametype$name, type = nametype$type, evid = names(go)[j], class = "aafGOItem")
+                    results[[i]] <- c(results[[i]], list(result))
                 }
             }
-            attributes(results[[i]]) <- attrs
         }
-        class(results) <- "aafList"
-        
-        return(results)
-        
-    }, envir = where)
+        attributes(results[[i]]) <- attrs
+    }
+    class(results) <- "aafList"
     
-    setMethod("getText", "aafGO", function(object) {
+    return(results)
+}
+
+setMethod("getText", "aafGO", function(object) {
+
+    result = callNextMethod()
+    return(paste(result, collapse = ", "))
+})
+
+setMethod("getURL", "aafGO", function(object) {
+
+    url <- "http://godatabase.org/cgi-bin/go.cgi?open_0="
     
-        result = callNextMethod()
-        return(paste(result, collapse = ", "))
+    if( !length(object) )
+        return(character(0))
+    url <- paste(url, object[[1]]@id, sep = "")
+    for(i in 2:length(object))
+        url <- paste(url, object[[i]]@id, sep = "&open_0=")
+    return(url)
+})
+
+setMethod("getHTML", "aafGO", function(object) {
+
+    result = callNextMethod()
+    return(paste(result, collapse = " "))
+})
+
+setMethod("getTD", "aafGO", function(object) {
     
-    }, where = where)
+    html <- getHTML(object)
+    if (!nchar(html))
+       html <- "&nbsp;"
     
-    setMethod("getURL", "aafGO", function(object) {
+    return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))       
+})
+
+setMethod("getCSS", "aafGO", function(object) {
     
-        url <- "http://godatabase.org/cgi-bin/go.cgi?open_0="
-        
-        if( !length(object) )
-            return(character(0))
-        url <- paste(url, object[[1]]@id, sep = "")
-        for(i in 2:length(object))
-            url <- paste(url, object[[i]]@id, sep = "&open_0=")
-        return(url)
-    
-    }, where = where)
-    
-    setMethod("getHTML", "aafGO", function(object) {
-    
-        result = callNextMethod()
-        return(paste(result, collapse = " "))
-    
-    }, where = where)
-    
-    setMethod("getTD", "aafGO", function(object) {
-        
-        html <- getHTML(object)
-        if (!nchar(html))
-           html <- "&nbsp;"
-        
-        return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))       
-    
-    }, where = where)
-    
-    setMethod("getCSS", "aafGO", function(object) {
-        
-        return("p.aafGOItem { margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }")       
-    
-    }, where = where)
+    return("p.aafGOItem { margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }")       
+})
 
 ## Define class aafGOItem
+
+setClass("aafGOItem", representation(id = "character",
+                                     name = "character",
+                                     type = "character",
+                                     evid = "character"),
+         prototype = list(id = character(0),
+                          name = character(0),
+                          type = character(0),
+                          evid = character(0)))
+
+setMethod("getText", "aafGOItem", function(object) {
+
+    if( !length(object@id) )
+        return("")
+    return(paste(object@id, ": ", object@name, sep = ""))
+})
+
+setMethod("getURL", "aafGOItem", function(object) {
+
+    url <- "http://godatabase.org/cgi-bin/go.cgi?open_0="
     
-    setClass("aafGOItem", representation(id = "character",
-                                         name = "character",
-                                         type = "character",
-                                         evid = "character"),
-             prototype = list(id = character(0),
-                              name = character(0),
-                              type = character(0),
-                              evid = character(0)), where = where)
+    if( !length(object@id) )
+        return(character(0))
+    return(paste(url, object@id, sep = ""))
+})
+
+setMethod("getHTML", "aafGOItem", function(object) {
     
-    setMethod("getText", "aafGOItem", function(object) {
+    if( !length(object@id) )
+        return("")
+    return(paste("<p class=\"aafGOItem\"><a href=\"", getURL(object), "\" title=\"", object@type, " (", object@evid, ")\">", object@name, "</a></p>", sep = ""))
+})
+
+setMethod("show", "aafGOItem", function(object) {
     
-        if( !length(object@id) )
-            return("")
-        return(paste(object@id, ": ", object@name, sep = ""))
-    
-    }, where = where)
-    
-    setMethod("getURL", "aafGOItem", function(object) {
-    
-        url <- "http://godatabase.org/cgi-bin/go.cgi?open_0="
-        
-        if( !length(object@id) )
-            return(character(0))
-        return(paste(url, object@id, sep = ""))
-    
-    }, where = where)
-    
-    setMethod("getHTML", "aafGOItem", function(object) {
-        
-        if( !length(object@id) )
-            return("")
-        return(paste("<p class=\"aafGOItem\"><a href=\"", getURL(object), "\" title=\"", object@type, " (", object@evid, ")\">", object@name, "</a></p>", sep = ""))
-        
-    }, where = where)
-    
-    setMethod("show", "aafGOItem", function(object) {
-        
-        cat("An object of class \"aafGOItem\"\n")
-        cat("@id   ", object@id, "\n", sep = "\"")
-        cat("@name ", object@name, "\n", sep = "\"")
-        cat("@type ", object@type, "\n", sep = "\"")
-        cat("@evid ", object@evid, "\n", sep = "\"")
-        
-    }, where = where)
+    cat("An object of class \"aafGOItem\"\n")
+    cat("@id   ", object@id, "\n", sep = "\"")
+    cat("@name ", object@name, "\n", sep = "\"")
+    cat("@type ", object@type, "\n", sep = "\"")
+    cat("@evid ", object@evid, "\n", sep = "\"")
+})
 
 ## Define class aafPathway
+
+setClass("aafPathway", "aafList", prototype = list())
+
+aafPathway <- function(probeids, chip) {
     
-    setClass("aafPathway", "aafList", prototype = list(), 
-             where = where)
-    
-    assign("aafPathway", function(probeids, chip) {
-        
-        pathways <- .aaf.raw(probeids, chip, "PATH")
-        enzymes <- .aaf.raw(probeids, chip, "ENZYME")
-        results <- vector("list", length(probeids))
-        attrs <- list(class = "aafPathway")
-        for(i in 1:length(probeids)) {
-            pathway <- pathways[[i]]
-            if( is.na(pathway[1]) ) {
-                results[[i]] <- list()
-            }
-            else {
-                name <- multiget(pathway, KEGGPATHID2NAME)
-                enzyme <- enzymes[[i]][1]
-                if( is.na(enzyme) )
-                    enzyme <- character(0)
-                result <- vector("list", length(pathway))
-                for(j in 1:length(pathway)) {
-                    result[[j]] <- list()
-                    attributes(result[[j]]) <- list(id = pathway[j], name = name[[j]], enzyme = enzyme, class = "aafPathwayItem")
-                }
-                results[[i]] <- result
-            }
-            attributes(results[[i]]) <- attrs
+    pathways <- .aaf.raw(probeids, chip, "PATH")
+    enzymes <- .aaf.raw(probeids, chip, "ENZYME")
+    results <- vector("list", length(probeids))
+    attrs <- list(class = "aafPathway")
+    for(i in 1:length(probeids)) {
+        pathway <- pathways[[i]]
+        if( is.na(pathway[1]) ) {
+            results[[i]] <- list()
         }
-        class(results) <- "aafList"
-        
-        return(results)
-        
-    }, envir = where)
+        else {
+            name <- multiget(pathway, KEGGPATHID2NAME)
+            enzyme <- enzymes[[i]][1]
+            if( is.na(enzyme) )
+                enzyme <- character(0)
+            result <- vector("list", length(pathway))
+            for(j in 1:length(pathway)) {
+                result[[j]] <- list()
+                attributes(result[[j]]) <- list(id = pathway[j], name = name[[j]], enzyme = enzyme, class = "aafPathwayItem")
+            }
+            results[[i]] <- result
+        }
+        attributes(results[[i]]) <- attrs
+    }
+    class(results) <- "aafList"
     
-    setMethod("getText", "aafPathway", function(object) {
+    return(results)
+}
+
+setMethod("getText", "aafPathway", function(object) {
+
+    result = callNextMethod()
+    return(paste(result, collapse = ", "))
+})
+
+setMethod("getHTML", "aafPathway", function(object) {
+
+    result = callNextMethod()
+    return(paste(result, collapse = " "))
+})
+
+setMethod("getTD", "aafPathway", function(object) {
     
-        result = callNextMethod()
-        return(paste(result, collapse = ", "))
+    html <- getHTML(object)
+    if (!nchar(html))
+       html <- "&nbsp;"
     
-    }, where = where)
+    return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))       
+})
+
+setMethod("getCSS", "aafPathway", function(object) {
     
-    setMethod("getHTML", "aafPathway", function(object) {
-    
-        result = callNextMethod()
-        return(paste(result, collapse = " "))
-    
-    }, where = where)
-    
-    setMethod("getTD", "aafPathway", function(object) {
-        
-        html <- getHTML(object)
-        if (!nchar(html))
-           html <- "&nbsp;"
-        
-        return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))       
-    
-    }, where = where)
-    
-    setMethod("getCSS", "aafPathway", function(object) {
-        
-        return("p.aafPathwayItem { margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }")       
-    
-    }, where = where)
+    return("p.aafPathwayItem { margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }")       
+})
 
 ## Define class aafPathwayItem
+
+setClass("aafPathwayItem", representation(id = "character",
+                                          name = "character",
+                                          enzyme = "character"),
+         prototype = list(id = character(0),
+                          name = character(0),
+                          enzyme = character(0)))
+
+setMethod("getText", "aafPathwayItem", function(object) {
+
+    if( !length(object@id) )
+        return("")
+    return(paste(object@id, ": ", object@name, sep = ""))
+})
+
+setMethod("getURL", "aafPathwayItem", function(object) {
     
-    setClass("aafPathwayItem", representation(id = "character",
-                                           name = "character",
-                                           enzyme = "character"),
-             prototype = list(id = character(0),
-                              name = character(0),
-                              enzyme = character(0)), where = where)
+    url <- "http://www.genome.ad.jp/dbget-bin/show_pathway?MAP"
+    urlnoenzyme <- "http://www.genome.ad.jp/kegg/pathway/hsa/hsa"
     
-    setMethod("getText", "aafPathwayItem", function(object) {
+    if( !length(object@id) )
+        return(character(0))
+    if( length(object@enzyme) )
+        return(paste(url, object@id, "+", object@enzyme, sep = ""))
+    return(paste(urlnoenzyme, object@id, ".html", sep = ""))
+})
+
+setMethod("getHTML", "aafPathwayItem", function(object) {
     
-        if( !length(object@id) )
-            return("")
-        return(paste(object@id, ": ", object@name, sep = ""))
+    if( !length(object@id) )
+        return("")
+    return(paste("<p class=\"aafPathwayItem\"><a href=\"", getURL(object), "\">", object@name, "</a></p>", sep = ""))
+})
+
+setMethod("show", "aafPathwayItem", function(object) {
     
-    }, where = where)
-    
-    setMethod("getURL", "aafPathwayItem", function(object) {
-        
-        url <- "http://www.genome.ad.jp/dbget-bin/show_pathway?MAP"
-        urlnoenzyme <- "http://www.genome.ad.jp/kegg/pathway/hsa/hsa"
-        
-        if( !length(object@id) )
-            return(character(0))
-        if( length(object@enzyme) )
-            return(paste(url, object@id, "+", object@enzyme, sep = ""))
-        return(paste(urlnoenzyme, object@id, ".html", sep = ""))
-        
-    }, where = where)
-    
-    setMethod("getHTML", "aafPathwayItem", function(object) {
-        
-        if( !length(object@id) )
-            return("")
-        return(paste("<p class=\"aafPathwayItem\"><a href=\"", getURL(object), "\">", object@name, "</a></p>", sep = ""))
-        
-    }, where = where)
-    
-    setMethod("show", "aafPathwayItem", function(object) {
-        
-        cat("An object of class \"aafGOItem\"\n")
-        cat("@id     ", object@id, "\n", sep = "\"")
-        cat("@name   ", object@name, "\n", sep = "\"")
-        cat("@enzyme ", object@enzyme, "\n", sep = "\"")
-        
-    }, where = where)
-}
+    cat("An object of class \"aafGOItem\"\n")
+    cat("@id     ", object@id, "\n", sep = "\"")
+    cat("@name   ", object@name, "\n", sep = "\"")
+    cat("@enzyme ", object@enzyme, "\n", sep = "\"")
+})
