@@ -315,12 +315,13 @@ function(pkg){
   # A small function to test for user-writeable libraries
   # by simply trying to add a directory to the .libPaths()
   # Any thing that does get written is then removed.
-  
+
+    dirname <- paste(sample(c(LETTERS, letters),  15), collapse="")
     tst <- vector()
     for(i in seq(along = paths)){
-      tst[i] <- dir.create(paste(paths[i], "/tmp", sep=""))
+      tst[i] <- dir.create(paste(paths[i], "/", dirname,  sep=""))
       if(tst[i])
-        unlink(paste(paths[i], "/tmp", sep=""), recursive = TRUE)
+        unlink(paste(paths[i], "/", dirname, sep=""), recursive = TRUE)
     }
     return(tst)
   }
