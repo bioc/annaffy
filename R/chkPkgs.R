@@ -64,7 +64,7 @@ function(pkg){
 
  
   # Check for user-writeable libraries
-  libs.avail <- chkLib(.libPaths())
+  libs.avail <- file.access(.libPaths(), mode = 2) == 0
 
   # If the first library isn't user installable, then this may be a
   # pointless exercise
@@ -285,7 +285,7 @@ function(pkg){
   
   
     #Only give the choice of user-installable libraries
-    use.libs <- .libPaths()[chkLib(.libPaths())]
+    use.libs <- .libPaths()[file.access(.libPaths(), mode=2) == 0]
     if(length(use.libs) == 1){
       lib <- use.libs
     }else{
@@ -308,20 +308,22 @@ function(pkg){
     return(pStatList)
   }
 
+# This function removed in favor of file.access(), which doesn't have the possible
+# unintended consequence of unlinking an existing /tmp directory.
 
-"chkLib" <-
-  function(paths){
+#"chkLib" <-
+#  function(paths){
   
   # A small function to test for user-writeable libraries
   # by simply trying to add a directory to the .libPaths()
   # Any thing that does get written is then removed.
-
-    dirname <- paste(sample(c(LETTERS, letters),  15), collapse="")
-    tst <- vector()
-    for(i in seq(along = paths)){
-      tst[i] <- dir.create(paste(paths[i], "/", dirname,  sep=""))
-      if(tst[i])
-        unlink(paste(paths[i], "/", dirname, sep=""), recursive = TRUE)
-    }
-    return(tst)
-  }
+    
+#    dirname <- paste(sample(c(LETTERS, letters),  15), collapse="")
+#    tst <- vector()
+#    for(i in seq(along = paths)){
+#      tst[i] <- dir.create(paste(paths[i], "/", dirname,  sep=""))
+#      if(tst[i])
+#        unlink(paste(paths[i], "/", dirname, sep=""), recursive = TRUE)
+#    }
+#    return(tst)
+#  }
