@@ -4,6 +4,8 @@ require("KEGG") || stop("Couldn't load package KEGG")
 
 .aaf.raw <- function(probeids, chip, type) {
 
+    chkPkgs(chip)
+
     require(chip, character.only = TRUE) ||
         stop(paste("Couldn't load data package", chip))
 
