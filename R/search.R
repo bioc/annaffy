@@ -3,7 +3,7 @@ aafSearchText <- function(chip, colnames, text, logic = "OR") {
 	require(chip, character.only = TRUE) ||
         stop(paste("Couldn't load data package", chip))
 
-    environment <- paste(chip, "SYMBOL", sep="")
+    environment <- paste(chip, "GENENAME", sep="")
 
     probeids <- do.call("ls", list(as.name(environment)))
     

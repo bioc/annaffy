@@ -7,7 +7,7 @@
 }
 
 \usage{
-aafTableAnn(probeids, chip, colnames = aaf.handler(), widget = FALSE)
+aafTableAnn(probeids, chip, colnames = aaf.handler(chip = chip), widget = FALSE)
 }
 \arguments{
   \item{probeids}{character vector of probe ids}

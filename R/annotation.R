@@ -37,9 +37,17 @@ require("KEGG") || stop("Couldn't load package KEGG")
     result <- vector("list", length(probeids))
     attrs <- list(class = class)
     for(i in 1:length(probeids)) {
-        ann <- as.integer(anns[[i]])
-        if( is.na(ann[1]) )
+        if (all(is.na(anns[[i]])))
             ann <- integer(0)
+        else if (is.numeric(anns[[i]])) 
+            ann <- as.integer(anns[[i]])
+        else {
+            tmp <- suppressWarnings(as.integer(unlist(strsplit(anns[[i]], ";"))))
+            ## Needed because yeast Pub Med data is returned as a ";" separated
+            ## string, often with a trailing NA. Suppressed warning of coersion
+            ## of "NA" to NA. AFAIK, this doesn't affect other Pub Med data.
+            ann <- tmp[!is.na(tmp)]
+        }
         attributes(ann) <- attrs
         result[[i]] <- ann
     }
@@ -81,11 +89,33 @@ aaf.handler <- function (probeids, chip, name)
 # names of annotation data that can be fetched. Otherwise, it dispatches the
 # request to the appropriate handler function.
 
-    if (missing(probeids))
-    c("Probe", "Symbol", "Description", "Function", "Chromosome",
-      "Chromosome Location", "GenBank", "LocusLink", "Cytoband",
-      "UniGene", "PubMed", "Gene Ontology", "Pathway")
-    else
+    if (missing(probeids)) {
+        deps <- list(
+            "Probe" = character(0), 
+            "Symbol" = "SYMBOL", 
+            "Description" = "GENENAME", 
+            "Function" = "SUMFUNC", 
+            "Chromosome" = "CHR", 
+            "Chromosome Location" = "CHRLOC", 
+            "GenBank" = "ACCNUM", 
+            "LocusLink" = "LOCUSID", 
+            "Cytoband" = c("MAP", "ACCNUM"), 
+            "UniGene" = "UNIGENE", 
+            "PubMed" = "PMID", 
+            "Gene Ontology" = "GO", 
+            "Pathway" = c("PATH", "ENZYME")
+        )
+        if (!missing(chip)) {
+            require(chip, character.only = TRUE) ||
+                stop(paste("Couldn't load data package", chip))
+            use <- rep(TRUE, length(deps))
+            for (i in seq(along = deps))
+                if (any(!(paste(chip, deps[[i]], sep="") %in% ls(paste("package:", chip, sep="")))))
+                    use[i] <- FALSE
+            deps <- deps[use]
+        }
+        names(deps)
+    } else
         switch(name,
                Probe = aafProbe(probeids),
                Symbol = aafSymbol(probeids, chip),

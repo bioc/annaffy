@@ -124,10 +124,10 @@ aafTableFrame <- function(frame, colnames = names(frame),
     return(new("aafTable", probeids = probeids, table = table))
 }
 
-aafTableAnn <- function(probeids, chip, colnames = aaf.handler(),
+aafTableAnn <- function(probeids, chip, colnames = aaf.handler(chip = chip),
                         widget = FALSE) {
     
-    colnames <- intersect(colnames, aaf.handler())
+    colnames <- intersect(colnames, aaf.handler(chip = chip))
     if (widget)
         colnames <- selectorWidget(aaf.handler(), colnames, ordernsel = TRUE,
                                    title = "Select Annotation Data Columns")
