@@ -1,0 +1,87 @@
+.aaf.character          Generic constructor for classes extending
+                        character
+.aaf.goterm             Fetch Gene Ontology term information
+aaf.handler             Handle feching annotation data columns
+.aaf.integer            Generic constructor for classes extending
+                        integer
+.aaf.raw                Fetch raw annotation data
+aafChromLoc-class       Class aafChromLoc, a class for gene chromosome
+                        locations
+aafChromLoc             Constructor for aafChromLoc objects
+aafChromosome-class     Class aafChromosome, a class for gene
+                        chromosome assignments
+aafChromosome           Constructor for aafChromosome objects
+aafCytoband-class       Class aafCytoband, a class for cytoband data
+aafCytoband             Constructor for aafCytoband objects
+aafDescription-class    Class aafDescription, a class for gene
+                        descriptions
+aafDescription          Constructor for aafDescription objects
+aafExpr                 Sample exprSet used for demonstration purposes
+aafFunction-class       Class aafFunction, a class for gene product
+                        functions
+aafFunction             Constructor for aafFunction objects
+aafGO-class             Class aafGO, a class for gene ontology ids
+aafGO                   Constructor for aafGO objects
+aafGOItem-class         Class aafGOItem, a class for gene ontology id
+                        elements
+aafGenBank-class        Class aafGenBank, a class for GenBank
+                        accession numbers
+aafGenBank              Constructor for aafGenBank objects
+aafIntensity-class      Class aafIntensity, a class for gene
+                        expression values
+aafList-class           Class aafList, a specialized subclass of list
+aafLocusLink-class      Class aafLocusLink, a class for LocusLink ids
+aafLocusLink            Constructor for aafLocusLink objects
+aafPathway-class        Class aafPathway, a class for KEGG pathway ids
+aafPathway              Constructor for aafPathway objects
+aafPathwayItem-class    Class aafPathwayItem, a class for KEGG pathway
+                        id elements
+aafPubMed-class         Class aafPubMed, a class for PubMed ids
+aafPubMed               Constructor for aafPubMed objects
+aafSigned-class         Class aafSigned, a class for signed numerical
+                        data
+aafSymbol-class         Class aafSymbol, a class for gene symbols
+aafSymbol               Constructor for aafSymbol objects
+aafTable-class          Class aafTable, a tabular microarray data
+                        class
+aafTable                Constructor for aafTable objects
+aafTableAnn             Constructor for aafTable objects from
+                        annotation data
+aafTableFrame           Constructor for aafTable objects from data
+                        frames
+aafTableInt             Constructor for aafTable objects from exprSets
+aafUniGene-class        Class aafUniGene, a class for UniGene cluster
+                        ids
+aafUniGene              Constructor for aafUniGene objects
+annaffyACCNUM           Subset of annotation data file for ACCNUM in
+                        the hgu95av2 package
+annaffyCHR              Subset of annotation data file for CHR in the
+                        hgu95av2 package
+annaffyCHRLOC           Subset of annotation data file for CHRLOC in
+                        the hgu95av2 package
+annaffyENZYME           Subset of annotation data file for ENZYME in
+                        the hgu95av2 package
+annaffyGENENAME         Subset of annotation data file for GENENAME in
+                        the hgu95av2 package
+annaffyGO               Subset of annotation data file for GO in the
+                        hgu95av2 package
+annaffyLOCUSID          Subset of annotation data file for LOCUSID in
+                        the hgu95av2 package
+annaffyMAP              Subset of annotation data file for MAP in the
+                        hgu95av2 package
+annaffyPATH             Subset of annotation data file for PATH in the
+                        hgu95av2 package
+annaffyPMID             Subset of annotation data file for PMID in the
+                        hgu95av2 package
+annaffySUMFUNC          Subset of annotation data file for SUMFUNC in
+                        the hgu95av2 package
+annaffySYMBOL           Subset of annotation data file for SYMBOL in
+                        the hgu95av2 package
+annaffyUNIGENE          Subset of annotation data file for UNIGENE in
+                        the hgu95av2 package
+getCSS-methods          Methods for function getCSS
+getHTML-methods         Methods for function getHTML
+getTD-methods           Methods for function getTD
+getText-methods         Methods for function getText
+getURL-methods          Methods for function getURL
+selectorWidget          Dialog to select items from a list

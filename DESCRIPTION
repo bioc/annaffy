@@ -1,0 +1,11 @@
+Package: annaffy
+Version: 1.0
+Date: 2003-07-11
+Title: Annotation for Affymetrix probes
+Author: Colin A. Smith <annaffy@colinsmith.org>
+Maintainer: Colin A. Smith <annaffy@colinsmith.org>
+Depends: Biobase, tcltk, GO, KEGG
+Description: Functions for organizing and presenting data from 
+  BioConductor Affymetrix annotation data packages in HTML and
+  text.
+License: LGPL

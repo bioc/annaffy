@@ -1,0 +1,27 @@
+aafExpr                 Sample exprSet used for demonstration purposes
+annaffyACCNUM           Subset of annotation data file for ACCNUM in
+                        the hgu95av2 package
+annaffyCHR              Subset of annotation data file for CHR in the
+                        hgu95av2 package
+annaffyCHRLOC           Subset of annotation data file for CHRLOC in
+                        the hgu95av2 package
+annaffyENZYME           Subset of annotation data file for ENZYME in
+                        the hgu95av2 package
+annaffyGENENAME         Subset of annotation data file for GENENAME in
+                        the hgu95av2 package
+annaffyGO               Subset of annotation data file for GO in the
+                        hgu95av2 package
+annaffyLOCUSID          Subset of annotation data file for LOCUSID in
+                        the hgu95av2 package
+annaffyMAP              Subset of annotation data file for MAP in the
+                        hgu95av2 package
+annaffyPATH             Subset of annotation data file for PATH in the
+                        hgu95av2 package
+annaffyPMID             Subset of annotation data file for PMID in the
+                        hgu95av2 package
+annaffySUMFUNC          Subset of annotation data file for SUMFUNC in
+                        the hgu95av2 package
+annaffySYMBOL           Subset of annotation data file for SYMBOL in
+                        the hgu95av2 package
+annaffyUNIGENE          Subset of annotation data file for UNIGENE in
+                        the hgu95av2 package
