@@ -20,7 +20,6 @@ chkPkg(pkg)
 \value{
   \item{installable}{Boolean indicating if the library is
     user-writeable}
-  \item{need.pkg}{Boolean indicating if packages need to be downloaded}
    \item{which.pkg}{Vector of packages needed}
 }
 

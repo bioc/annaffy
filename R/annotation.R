@@ -60,15 +60,15 @@ require("KEGG") || stop("Couldn't load package KEGG")
         return(list())
 
     if (num$Ontology == "BP")
-        return(list(name = get(num$GOID, GOTERM), 
+        return(list(name = attr(get(num$GOID, GOTERM), "Term"), 
                     type = "Biological Process"))
     
     if (num$Ontology == "CC")
-        return(list(name = get(num$GOID, GOTERM), 
+        return(list(name = attr(get(num$GOID, GOTERM), "Term"), 
                     type = "Cellular Component"))
     
     if (num$Ontology == "MF")
-        return(list(name = get(num$GOID, GOTERM), 
+        return(list(name = attr(get(num$GOID, GOTERM), "Term"), 
                     type = "Molecular Function"))
     
     return(list())

@@ -10,7 +10,7 @@
     
   # Modified 7-2-2004: Removed package consistency checks, replaced with package
   # version checking. This is to ensure that we don't download packages that will
-  # break annaffy. For the current version, this means 1.5.x series packages.
+  # break annaffy. For the current version, this means 1.6.x series packages.
   
   # Exit early (save CPU) if we've already checked this package
   if (pkg %in% getOption("aafChkPkgs"))
@@ -23,7 +23,7 @@
   noinst.message <- paste("You have chosen not to install anything.\n annaffy will",
                   "now abort.\n")
   
-  if(inst$need.pkg){
+  if(length(inst$which.pkg)){
     install <- TRUE
     tmp <- lookPkg(inst$which.pkg, verbose = TRUE)
   
@@ -106,14 +106,12 @@ function(pkg){
 
   # No packages installed
   if(!any(pkg.avail, go.avail, kg.avail)){
-    need.pkg <- TRUE
     which.pkg <- pg
   }
 
   # One package installed
   installed <- which(c(any(pkg.avail), any(go.avail), any(kg.avail)))
   if(length(installed) == 1){
-    need.pkg <- TRUE
     if(installed == 1)
       compatible <- chkPkgVer(pkg.ver[pkg.avail][1])
     if(installed == 2)
@@ -130,7 +128,6 @@ function(pkg){
 
   # Two packages installed
   if(length(installed) == 2){
-    need.pkg <- TRUE
     if(sum(installed) == 3){
       pkg.compatible <- chkPkgVer(pkg.ver[pkg.avail][1])
       go.compatible <- chkPkgVer(go.ver[go.avail][1])
@@ -160,10 +157,8 @@ function(pkg){
     kg.compatible <- chkPkgVer(kg.ver[kg.avail][1])
     installed <- installed[c(pkg.compatible, go.compatible, kg.compatible)]
     if(length(installed) == 3){
-      need.pkg <- FALSE
-      which.pkg <- NA
+      which.pkg <- character()
     }else{
-      need.pkg <- TRUE
       if(length(installed) == 0)
         which.pkg <- pg
       else
@@ -171,12 +166,14 @@ function(pkg){
     }
   }
  
-  return(list(installable = installable, need.pkg = need.pkg,
-               which.pkg = which.pkg))
+  # annaffy shouldn't be in the list
+  which.pkg <- which.pkg[which.pkg != "annaffy"]
+ 
+  return(list(installable = installable, which.pkg = which.pkg))
 }
 
 
- # A function to check that packages are 1.5.x. This will have to be incremented
+ # A function to check that packages are 1.6.x. This will have to be incremented
  # as compatibility changes. Perhaps set a flag for each annaffy version that
  # indicates the compatible annotation packages?
 
@@ -187,7 +184,7 @@ function(pkg){
     else{
       ver <- strsplit(input, split = "\\.")
       tmp <- matrix(unlist(ver, use.names = FALSE), nc = 3, byrow = TRUE)
-      test <- all(tmp[,1] == 1, tmp[,2] == 5)
+      test <- all(tmp[,1] == 1, tmp[,2] == 6)
      return(test)
     }
   }
@@ -307,23 +304,3 @@ function(pkg){
                                             curRepList = object$repList)
     return(pStatList)
   }
-
-# This function removed in favor of file.access(), which doesn't have the possible
-# unintended consequence of unlinking an existing /tmp directory.
-
-#"chkLib" <-
-#  function(paths){
-  
-  # A small function to test for user-writeable libraries
-  # by simply trying to add a directory to the .libPaths()
-  # Any thing that does get written is then removed.
-    
-#    dirname <- paste(sample(c(LETTERS, letters),  15), collapse="")
-#    tst <- vector()
-#    for(i in seq(along = paths)){
-#      tst[i] <- dir.create(paste(paths[i], "/", dirname,  sep=""))
-#      if(tst[i])
-#        unlink(paste(paths[i], "/", dirname, sep=""), recursive = TRUE)
-#    }
-#    return(tst)
-#  }
