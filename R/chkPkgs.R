@@ -71,13 +71,23 @@ chkPkgs <- function(pkg) {
                                  pkgVersions[[l]], "is available",
                                  "for download, would you like to",
                                  "install?"))
-          if ((ans == "yes")||(ans == "y"))
+          if ((ans == "yes")||(ans == "y")){
+            ## added because install.packages2 chokes if the same
+            ## version is in devel as well as release repositories
+            if(k == 1) develOK <- FALSE else develOK <- TRUE
             install.packages2(sapply(pInfoList[[k]], pkgName),
                               versions=sapply(pInfoList[[k]],
                                 function(x) as.character(pkgVersion(x))),
-                              develOK=TRUE)
+                              develOK=develOK)
+          }
+          break
         }
       }
+      ## If both release and devel versions are acceptable, install
+      ## the release version and quit.
+      if(is.installed(pkg, vers = sapply(pInfoList[[k]],
+                             function(x) as.character(pkgVersion(x)))))
+        break
     }
     ## Record that we've already checked this package
     options(aafChkPkgs = c(getOption("aafChkPkgs"), pkg))
