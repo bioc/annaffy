@@ -75,9 +75,9 @@
                   "35772_at", "38207_at", "33720_at", "38573_at", "38149_at",
                   "1065_at")
 
-        
-    types <- c("ACCNUM", "CHRLOC", "CHR", "ENZYME", "GENENAME", "GO", "LOCUSID", 
-               "MAP", "PATH", "PMID", "SUMFUNC", "SYMBOL", "UNIGENE")
+    types <- aaf.handler(chip = "hgu95av2")    
+    #types <- c("ACCNUM", "CHRLOC", "CHR", "ENZYME", "GENENAME", "GO", "LOCUSID", 
+    #           "MAP", "PATH", "PMID", "SUMFUNC", "SYMBOL", "UNIGENE")
     
     for(type in types)
         saveannaffy(probeids, "hgu95av2", type)

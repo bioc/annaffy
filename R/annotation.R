@@ -27,7 +27,7 @@ require("KEGG") || stop("Couldn't load package KEGG")
         result[[i]] <- ann
     }
     class(result) <- "aafList"
-    
+
     return(result)
 }
 
@@ -39,7 +39,7 @@ require("KEGG") || stop("Couldn't load package KEGG")
     for(i in 1:length(probeids)) {
         if (all(is.na(anns[[i]])))
             ann <- integer(0)
-        else if (is.numeric(anns[[i]])) 
+        else if (is.numeric(anns[[i]]))
             ann <- as.integer(anns[[i]])
         else {
             tmp <- suppressWarnings(as.integer(unlist(strsplit(anns[[i]], ";"))))
@@ -52,7 +52,7 @@ require("KEGG") || stop("Couldn't load package KEGG")
         result[[i]] <- ann
     }
     class(result) <- "aafList"
-    
+
     return(result)
 }
 
@@ -63,22 +63,22 @@ require("KEGG") || stop("Couldn't load package KEGG")
 
     if (is.na(num$Ontology))
         return(list())
-    
+
     if (!exists(num$GOID, GOTERM))
         return(list())
 
     if (num$Ontology == "BP")
-        return(list(name = attr(get(num$GOID, GOTERM), "Term"), 
+        return(list(name = attr(get(num$GOID, GOTERM), "Term"),
                     type = "Biological Process"))
-    
+
     if (num$Ontology == "CC")
-        return(list(name = attr(get(num$GOID, GOTERM), "Term"), 
+        return(list(name = attr(get(num$GOID, GOTERM), "Term"),
                     type = "Cellular Component"))
-    
+
     if (num$Ontology == "MF")
-        return(list(name = attr(get(num$GOID, GOTERM), "Term"), 
+        return(list(name = attr(get(num$GOID, GOTERM), "Term"),
                     type = "Molecular Function"))
-    
+
     return(list())
 }
 
@@ -89,33 +89,33 @@ aaf.handler <- function (probeids, chip, name)
 # names of annotation data that can be fetched. Otherwise, it dispatches the
 # request to the appropriate handler function.
 
-    if (missing(probeids)) {
-        deps <- list(
-            "Probe" = character(0), 
-            "Symbol" = "SYMBOL", 
-            "Description" = "GENENAME", 
-            "Function" = "SUMFUNC", 
-            "Chromosome" = "CHR", 
-            "Chromosome Location" = "CHRLOC", 
-            "GenBank" = "ACCNUM", 
-            "LocusLink" = "LOCUSID", 
-            "Cytoband" = c("MAP", "ACCNUM"), 
-            "UniGene" = "UNIGENE", 
-            "PubMed" = "PMID", 
-            "Gene Ontology" = "GO", 
-            "Pathway" = c("PATH", "ENZYME")
-        )
-        if (!missing(chip)) {
-            require(chip, character.only = TRUE) ||
-                stop(paste("Couldn't load data package", chip))
-            use <- rep(TRUE, length(deps))
-            for (i in seq(along = deps))
-                if (any(!(paste(chip, deps[[i]], sep="") %in% ls(paste("package:", chip, sep="")))))
-                    use[i] <- FALSE
-            deps <- deps[use]
-        }
-        names(deps)
-    } else
+    deps <- list(
+                 "Probe" = character(0),
+                 "Symbol" = "SYMBOL",
+                 "Description" = "GENENAME",
+                 "Function" = "SUMFUNC",
+                 "Chromosome" = "CHR",
+                 "Chromosome Location" = "CHRLOC",
+                 "GenBank" = "ACCNUM",
+                 "LocusLink" = "LOCUSID",
+                 "Cytoband" = c("MAP", "ACCNUM"),
+                 "UniGene" = "UNIGENE",
+                 "PubMed" = "PMID",
+                 "Gene Ontology" = "GO",
+                 "Pathway" = c("PATH", "ENZYME")
+                 )
+    if (!missing(chip)) {
+        require(chip, character.only = TRUE) ||
+        stop(paste("Couldn't load data package", chip))
+        use <- rep(TRUE, length(deps))
+        for (i in seq(along = deps))
+            if (any(!(paste(chip, deps[[i]], sep="") %in% ls(paste("package:", chip, sep="")))))
+                use[i] <- FALSE
+        deps <- deps[use]
+    }
+    if( missing(probeids) )
+        return(names(deps))
+    else
         switch(name,
                Probe = aafProbe(probeids),
                Symbol = aafSymbol(probeids, chip),
@@ -164,7 +164,7 @@ setMethod("getURL", "ANY", function(object) {
 })
 
 setMethod("getHTML", "ANY", function(object) {
-    
+
     if( is.double(object) )
         object <- signif(object, getOption("sigfigs"))
     if( !nchar(text <- getText(object)) )
@@ -176,17 +176,17 @@ setMethod("getHTML", "ANY", function(object) {
 })
 
 setMethod("getTD", "ANY", function(object) {
-    
+
     html <- getHTML(object)
     if (!nchar(html))
        html <- "&nbsp;"
-    
-    return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))       
+
+    return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))
 })
 
 setMethod("getCSS", "ANY", function(object) {
-    
-    return(character(0))       
+
+    return(character(0))
 })
 
 ## Define class aafList
@@ -194,7 +194,7 @@ setMethod("getCSS", "ANY", function(object) {
 setClass("aafList", "list", prototype = list())
 
 setMethod("getText", "aafList", function(object) {
-    
+
     if( !length(object) )
         return(character(0))
     result <- character(length(object))
@@ -212,7 +212,7 @@ setMethod("getURL", "aafList", function(object) {
 })
 
 setMethod("getHTML", "aafList", function(object) {
-    
+
     if( !length(object) )
         return(character(0))
     result <- character(length(object))
@@ -222,7 +222,7 @@ setMethod("getHTML", "aafList", function(object) {
 })
 
 setMethod("getTD", "aafList", function(object) {
-    
+
     if( !length(object) )
         return(character(0))
     result <- character(length(object))
@@ -232,7 +232,7 @@ setMethod("getTD", "aafList", function(object) {
 })
 
 setMethod("getCSS", "aafList", function(object) {
-    
+
     return(getCSS(object[[1]]))
 })
 
@@ -250,7 +250,7 @@ setMethod("show", "aafList", function(object) {
         history <- get("showHistory", frame)
     else
         history <- integer(0)
-    
+
     cat("An object of class \"", class(object), "\"\n", sep = "")
     if( length(object) )
         for(i in 1:length(object)) {
@@ -268,18 +268,18 @@ setMethod("show", "aafList", function(object) {
 setClass("aafProbe", "character", prototype = character(0))
 
 aafProbe <- function(probeids) {
-    
+
     probes <- as.list(probeids)
     for(i in 1:length(probes))
         class(probes[[i]]) <- "aafProbe"
-    
+
     return(new("aafList", probes))
 }
 
 setMethod("getURL", "aafProbe", function(object) {
-    
+
     url <- "https://www.affymetrix.com/LinkServlet?&probeset="
-    
+
     if( !length(object) )
         return(character(0))
     return(paste(url, object, sep = ""))
@@ -290,7 +290,7 @@ setMethod("getURL", "aafProbe", function(object) {
 setClass("aafSymbol", "character", prototype = character(0))
 
 aafSymbol <- function(probeids, chip) {
-    
+
     return(.aaf.character(probeids, chip, "SYMBOL", "aafSymbol"))
 }
 
@@ -299,7 +299,7 @@ aafSymbol <- function(probeids, chip) {
 setClass("aafDescription", "character", prototype = character(0))
 
 aafDescription <- function(probeids, chip) {
-    
+
     return(.aaf.character(probeids, chip, "GENENAME", "aafDescription"))
 }
 
@@ -308,7 +308,7 @@ aafDescription <- function(probeids, chip) {
 setClass("aafFunction", "character", prototype = character(0))
 
 aafFunction <- function(probeids, chip) {
-    
+
     return(.aaf.character(probeids, chip, "SUMFUNC", "aafFunction"))
 }
 
@@ -317,7 +317,7 @@ aafFunction <- function(probeids, chip) {
 setClass("aafChromosome", "character", prototype = character(0))
 
 aafChromosome <- function(probeids, chip) {
-    
+
     return(.aaf.character(probeids, chip, "CHR", "aafChromosome"))
 }
 
@@ -326,7 +326,7 @@ aafChromosome <- function(probeids, chip) {
 setClass("aafChromLoc", "integer", prototype = integer(0))
 
 aafChromLoc <- function(probeids, chip) {
-    
+
     return(.aaf.integer(probeids, chip, "CHRLOC", "aafChromLoc"))
 }
 
@@ -335,7 +335,7 @@ aafChromLoc <- function(probeids, chip) {
 setClass("aafGenBank", "character", prototype = character(0))
 
 aafGenBank <- function(probeids, chip) {
-    
+
     return(.aaf.character(probeids, chip, "ACCNUM", "aafGenBank"))
 }
 
@@ -343,7 +343,7 @@ setMethod("getURL", "aafGenBank", function(object) {
 
     url <- "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=search&db=nucleotide&term="
     urlsuffix <- "%5BACCN%5D&doptcmdl=GenBank"
-    
+
     if( !length(object) )
         return(character(0))
     return(paste(url, object, urlsuffix, sep = ""))
@@ -354,14 +354,14 @@ setMethod("getURL", "aafGenBank", function(object) {
 setClass("aafLocusLink", "integer", prototype = integer(0))
 
 aafLocusLink <- function(probeids, chip) {
-    
+
     return(.aaf.integer(probeids, chip, "LOCUSID", "aafLocusLink"))
 }
 
 setMethod("getURL", "aafLocusLink", function(object) {
-    
+
     url <- "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&dopt=Graphics&list_uids="
-    
+
     if( !length(object) )
         return(character(0))
     return(paste(url, object, sep = ""))
@@ -375,7 +375,7 @@ setClass("aafCytoband", representation(band = "character",
                           genbank = character(0)))
 
 aafCytoband <- function(probeids, chip) {
-    
+
     band <- .aaf.raw(probeids, chip, "MAP")
     genbank <- .aaf.raw(probeids, chip, "ACCNUM")
     result <- vector("list", length(probeids))
@@ -385,7 +385,7 @@ aafCytoband <- function(probeids, chip) {
     for(i in which(!navals))
         attributes(result[[i]]) <- list(band = band[[i]], genbank = genbank[[i]], class = "aafCytoband")
     class(result) <- "aafList"
-    
+
     return(result)
 }
 
@@ -400,14 +400,14 @@ setMethod("getURL", "aafCytoband", function(object) {
 
     url <- "http://www.ncbi.nlm.nih.gov/mapview/map_search.cgi?direct=on&query="
     urlsuffix <- "%5BACCN%5D"
-    
+
     if( !length(object@band) )
         return(character(0))
     return(paste(url, object@genbank, urlsuffix, sep = ""))
 })
 
 setMethod("show", "aafCytoband", function(object) {
-    
+
     cat("An object of class \"aafCytoband\"\n")
     cat("@band    ", object@band, "\n", sep = "\"")
     cat("@genbank ", object@genbank, "\n", sep = "\"")
@@ -418,15 +418,15 @@ setMethod("show", "aafCytoband", function(object) {
 setClass("aafUniGene", "character", prototype = character(0))
 
 aafUniGene <- function(probeids, chip) {
-    
+
     return(.aaf.character(probeids, chip, "UNIGENE", "aafUniGene"))
 }
 
 setMethod("getURL", "aafUniGene", function(object) {
-    
+
     url <- "http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG="
     urlinter <- "&CID="
-    
+
     if( !length(object) )
         return(character(0))
     return(paste(url, sub("[.]", urlinter, object), sep = ""))
@@ -437,29 +437,29 @@ setMethod("getURL", "aafUniGene", function(object) {
 setClass("aafPubMed", "integer", prototype = integer(0))
 
 aafPubMed <- function(probeids, chip) {
-    
+
     return(.aaf.integer(probeids, chip, "PMID", "aafPubMed"))
 }
 
 setMethod("getURL", "aafPubMed", function(object) {
-    
+
     url <- "http://www.ncbi.nih.gov/entrez/query.fcgi?tool=bioconductor&cmd=Retrieve&db=PubMed&list_uids="
-    
+
     if( !length(object) )
         return(character(0))
     return(paste(url, paste(object, collapse = "%2c"), sep = ""))
 })
 
 setMethod("getHTML", "aafPubMed", function(object) {
-    
+
     if( !length(object) )
         return("")
     return(paste("<a href=\"", getURL(object), "\">", length(object), "</a>", sep = ""))
 })
 
 setMethod("getCSS", "aafPubMed", function(object) {
-    
-    return("td.aafPubMed { text-align: center }")       
+
+    return("td.aafPubMed { text-align: center }")
 })
 
 ## Define class aafGO
@@ -467,7 +467,7 @@ setMethod("getCSS", "aafPubMed", function(object) {
 setClass("aafGO", "aafList", prototype = list())
 
 aafGO <- function(probeids, chip) {
-    
+
     gos <- .aaf.raw(probeids, chip, "GO")
     results <- vector("list", length(probeids))
     attrs <- list(class = "aafGO")
@@ -487,7 +487,7 @@ aafGO <- function(probeids, chip) {
         attributes(results[[i]]) <- attrs
     }
     class(results) <- "aafList"
-    
+
     return(results)
 }
 
@@ -500,7 +500,7 @@ setMethod("getText", "aafGO", function(object) {
 setMethod("getURL", "aafGO", function(object) {
 
     url <- "http://godatabase.org/cgi-bin/go.cgi?open_0="
-    
+
     if( !length(object) )
         return(character(0))
     url <- paste(url, object[[1]]@id, sep = "")
@@ -516,17 +516,17 @@ setMethod("getHTML", "aafGO", function(object) {
 })
 
 setMethod("getTD", "aafGO", function(object) {
-    
+
     html <- getHTML(object)
     if (!nchar(html))
        html <- "&nbsp;"
-    
-    return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))       
+
+    return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))
 })
 
 setMethod("getCSS", "aafGO", function(object) {
-    
-    return("p.aafGOItem { margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }")       
+
+    return("p.aafGOItem { margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }")
 })
 
 ## Define class aafGOItem
@@ -550,21 +550,21 @@ setMethod("getText", "aafGOItem", function(object) {
 setMethod("getURL", "aafGOItem", function(object) {
 
     url <- "http://godatabase.org/cgi-bin/go.cgi?open_0="
-    
+
     if( !length(object@id) )
         return(character(0))
     return(paste(url, object@id, sep = ""))
 })
 
 setMethod("getHTML", "aafGOItem", function(object) {
-    
+
     if( !length(object@id) )
         return("")
     return(paste("<p class=\"aafGOItem\"><a href=\"", getURL(object), "\" title=\"", object@type, " (", object@evid, ")\">", object@name, "</a></p>", sep = ""))
 })
 
 setMethod("show", "aafGOItem", function(object) {
-    
+
     cat("An object of class \"aafGOItem\"\n")
     cat("@id   ", object@id, "\n", sep = "\"")
     cat("@name ", object@name, "\n", sep = "\"")
@@ -577,7 +577,7 @@ setMethod("show", "aafGOItem", function(object) {
 setClass("aafPathway", "aafList", prototype = list())
 
 aafPathway <- function(probeids, chip) {
-    
+
     pathways <- .aaf.raw(probeids, chip, "PATH")
     enzymes <- .aaf.raw(probeids, chip, "ENZYME")
     results <- vector("list", length(probeids))
@@ -602,7 +602,7 @@ aafPathway <- function(probeids, chip) {
         attributes(results[[i]]) <- attrs
     }
     class(results) <- "aafList"
-    
+
     return(results)
 }
 
@@ -619,17 +619,17 @@ setMethod("getHTML", "aafPathway", function(object) {
 })
 
 setMethod("getTD", "aafPathway", function(object) {
-    
+
     html <- getHTML(object)
     if (!nchar(html))
        html <- "&nbsp;"
-    
-    return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))       
+
+    return(paste("<td class=\"", class(object), "\">", html, "</td>", sep = ""))
 })
 
 setMethod("getCSS", "aafPathway", function(object) {
-    
-    return("p.aafPathwayItem { margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }")       
+
+    return("p.aafPathwayItem { margin-top: 1px; margin-bottom: 1px; padding-left: 10px; text-indent: -10px }")
 })
 
 ## Define class aafPathwayItem
@@ -649,10 +649,10 @@ setMethod("getText", "aafPathwayItem", function(object) {
 })
 
 setMethod("getURL", "aafPathwayItem", function(object) {
-    
+
     url <- "http://www.genome.ad.jp/dbget-bin/show_pathway?MAP"
     urlnoenzyme <- "http://www.genome.ad.jp/kegg/pathway/hsa/hsa"
-    
+
     if( !length(object@id) )
         return(character(0))
     if( length(object@enzyme) )
@@ -661,14 +661,14 @@ setMethod("getURL", "aafPathwayItem", function(object) {
 })
 
 setMethod("getHTML", "aafPathwayItem", function(object) {
-    
+
     if( !length(object@id) )
         return("")
     return(paste("<p class=\"aafPathwayItem\"><a href=\"", getURL(object), "\">", object@name, "</a></p>", sep = ""))
 })
 
 setMethod("show", "aafPathwayItem", function(object) {
-    
+
     cat("An object of class \"aafGOItem\"\n")
     cat("@id     ", object@id, "\n", sep = "\"")
     cat("@name   ", object@name, "\n", sep = "\"")
