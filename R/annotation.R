@@ -1,7 +1,3 @@
-require("Biobase") || stop("Couldn't load package Biobase")
-require("GO") || stop("Couldn't load package GO")
-require("KEGG") || stop("Couldn't load package KEGG")
-
 .aaf.raw <- function(probeids, chip, type) {
 
     chkPkgs(chip)
@@ -166,7 +162,8 @@ setMethod("getURL", "ANY", function(object) {
 setMethod("getHTML", "ANY", function(object) {
 
     if( is.double(object) )
-        object <- signif(object, getOption("sigfigs"))
+        object <- signif(object, ifelse(is.null(getOption("sigfigs")), 6, 
+                                                getOption("sigfigs")))
     if( !nchar(text <- getText(object)) )
         return("")
     if( length(url <- getURL(object)) )
