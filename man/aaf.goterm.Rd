@@ -24,3 +24,4 @@
 }
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 \keyword{ file }
+\keyword{internal}
