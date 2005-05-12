@@ -9,7 +9,7 @@ chkPkgs <- function(pkg) {
     ## feature freeze, so cannot change API by adding as arguments to function.
 
     aaVersMaj <- 1
-    aaVersMin <- 6
+    aaVersMin <- 7
   
 
     ## Set our min and the 'too high' versions
