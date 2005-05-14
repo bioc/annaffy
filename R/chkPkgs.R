@@ -9,7 +9,7 @@ chkPkgs <- function(pkg) {
     ## feature freeze, so cannot change API by adding as arguments to function.
 
     aaVersMaj <- 1
-    aaVersMin <- 7
+    aaVersMin <- 8
   
 
     ## Set our min and the 'too high' versions
@@ -66,11 +66,15 @@ chkPkgs <- function(pkg) {
       ## Should only be one pkgVersion here, but just in case
       for (l in seq(along=pkgVersions)) {
         if ((pkgVersions[[l]] >= minVers)&&
-              (pkgVersions[[l]] < highVers)) {
-          ans <- userQuery(paste("Package", pkg, "version",
-                                 pkgVersions[[l]], "is available",
-                                 "for download, would you like to",
-                                 "install?"))
+            (pkgVersions[[l]] < highVers)) {
+            if (interactive()) {
+                ans <- userQuery(paste("Package", pkg, "version",
+                                       pkgVersions[[l]], "is available",
+                                       "for download, would you like to",
+                                       "install?"))
+            } else {
+                ans <- "no"
+            }
           if ((ans == "yes")||(ans == "y")){
             ## added because install.packages2 chokes if the same
             ## version is in devel as well as release repositories
