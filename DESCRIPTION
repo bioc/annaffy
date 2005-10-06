@@ -4,8 +4,8 @@ Date: 2005-04-19
 Title: Annotation tools for Affymetrix biological metadata
 Author: Colin A. Smith <annaffy@colinsmith.org>
 Maintainer: Colin A. Smith <annaffy@colinsmith.org>
-Depends: R (>= 1.7.0), Biobase, GO (>= 1.6.0), KEGG
-Suggests: hgu95av2, multtest, tcltk, reposTools
+Depends: R (>= 2.1.0), Biobase, GO (>= 1.6.0), KEGG
+Suggests: hgu95av2, multtest, tcltk
 Description: Functions for handling data from Bioconductor Affymetrix
         annotation data packages. Produces compact HTML and text
         reports including experimental data and URL links to many
