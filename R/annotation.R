@@ -429,6 +429,16 @@ setMethod("getURL", "aafUniGene", function(object) {
     return(paste(url, sub("[.]", urlinter, object), sep = ""))
 })
 
+setMethod("getHTML", "aafUniGene", function(object) {
+
+    if( !length(object) )
+        return("")
+    if( length(url <- getURL(object)) )
+        return(paste(paste("<a href=\"", url, "\">", object, "</a>", sep = ""), collapse = " "))
+    else
+        return(text)
+})
+
 ## Define class aafPubMed
 
 setClass("aafPubMed", "integer", prototype = integer(0))

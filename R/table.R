@@ -203,27 +203,38 @@ dim.aafTable <- function(x) {
     return(c(length(x@table[[1]]), length(x@table)))
 }
 
-merge.aafTable <- function(x, y, suffixes = c(".x",".y"), ...) {
+merge.aafTable <- function(x, y, all = FALSE, all.x = all, all.y = all, 
+                           suffixes = c(".x",".y"), ...) {
     
     if (!length(y@probeids)) {
         if (length(x@table[[1]]) != length(y@table[[1]]))
             stop("The tables must have the same number of rows")
-        probeids = x@probeids
-        xrange = 1:length(x@table[[1]])
-        yrange = xrange
+        probeids <- x@probeids
+        xrange <- 1:length(x@table[[1]])
+        yrange <- xrange
     } else if (!length(x@probeids)) {
         if (length(x@table[[1]]) != length(y@table[[1]]))
             stop("The tables must have the same number of rows")
-        probeids = y@probeids
-        yrange = 1:length(y@table[[1]])
-        xrange = yrange
+        probeids <- y@probeids
+        yrange <- 1:length(y@table[[1]])
+        xrange <- yrange
     } else {
-        probeids = intersect(x@probeids, y@probeids)
-        if (!length(probeids))
-            stop("The tables do not share any common probe ids")
-        xrange = match(probeids, x@probeids)
-        yrange = match(probeids, y@probeids)
+        if (all.x && all.y)
+            probeids <- union(x@probeids, y@probeids)
+        else if (all.x)
+            probeids <- x@probeids
+        else if (all.y)
+            probeids <- y@probeids
+        else {
+            probeids <- intersect(x@probeids, y@probeids)
+            if (!length(probeids))
+                stop("The tables do not share any common probe ids")
+        }
+        xrange <- match(probeids, x@probeids)
+        yrange <- match(probeids, y@probeids)
     }
+    xrangena <- which(is.na(xrange))
+    yrangena <- which(is.na(yrange))
     
     xnames <- names(x@table)
     ynames <- names(y@table)
@@ -235,10 +246,16 @@ merge.aafTable <- function(x, y, suffixes = c(".x",".y"), ...) {
     names(x@table) <- xnames
     names(y@table) <- ynames
     
-    for (col in 1:length(x@table))
+    for (col in 1:length(x@table)) {
+        colclass <- class(x@table[[col]][[1]])
         x@table[[col]] <- x@table[[col]][xrange]
-    for (col in 1:length(y@table))
+        x@table[[col]][xrangena] <- rep(list(new(colclass)), length(xrangena))
+    }
+    for (col in 1:length(y@table)) {
+        colclass <- class(y@table[[col]][[1]])
         y@table[[col]] <- y@table[[col]][yrange]
+        y@table[[col]][yrangena] <- rep(list(new(colclass)), length(yrangena))
+    }
     
     return(new("aafTable", probeids = probeids, table = c(x@table, y@table)))
 }

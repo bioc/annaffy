@@ -2,6 +2,7 @@
 \docType{class}
 \alias{aafUniGene-class}
 \alias{getURL,aafUniGene-method}
+\alias{getHTML,aafUniGene-method}
 \title{Class aafUniGene, a class for UniGene cluster ids}
 \description{
   An abstraction for UniGene cluster ids from Bioconductor data packages.
@@ -24,9 +25,14 @@ Class \code{character}, from data part.
 \section{Methods}{
   \describe{
     \item{getURL}{
-      (aafUniGene): Returns a URL to the corresponding entry in
+      (aafUniGene): Returns a URLs to the corresponding entry in
       NCBI's UniGene database. On the rare chance that more than
       one id is defined, more than one URL will be returned.
+    }
+    \item{getHTML}{
+      (aafUniGene): Returns an HTML representation with a link to
+      the UniGene database. On the rare chance that more than
+      one id is defined, more than one link will be returned.
     }
   }
 }

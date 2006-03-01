@@ -66,7 +66,8 @@ by calls of the form \code{new("aafList", probeids, table)}.
       (aafTable): Returns the dimensions of the table.
     }
     \item{merge}{
-      (aafTable, aafTable, suffixes = c(".x",".y")): Merges two
+      (aafTable, aafTable, all = FALSE, all.x = all, all.y = all, 
+      suffixes = c(".x",".y")): Merges two
       tables together, aligning common probe ids if possible.
       Duplicate column names are given suffixes to make them unique.
       Returns the merged table.
