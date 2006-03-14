@@ -1,5 +1,5 @@
 exportPattern("^aaf")
-export(selectorWidget)
+export(selectorWidget,is.annpkg)
 S3method("$", aafTable)
 S3method(dim, aafTable)
 S3method(merge, aafTable)

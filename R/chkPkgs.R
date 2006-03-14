@@ -24,7 +24,10 @@ chkPkgs <- function(pkg) {
             print(paste("Package", pkg, "was not found in the Bioconductor",
                         "repository."))
         }
-    }
+    } else
+        if (!is.annpkg(pkg))
+            warning(paste("The", pkg, "package does not appear to contain",
+                          "annotation data."))
 
     ## Record that we've already checked this package
     options(aafChkPkgs = c(getOption("aafChkPkgs"), pkg))

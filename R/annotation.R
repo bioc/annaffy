@@ -1,3 +1,26 @@
+is.annpkg <- function(packages, lib.loc = NULL) {
+    
+    envnames <- c("ACCNUM", "CHR", "CHRLOC", "ENZYME", "GENENAME", "GO",
+                  "LOCUSID", "MAP", "PATH", "PMID", "SYMBOL", "UNIGENE")
+    
+    result <- logical(length(packages))
+    
+    for (i in seq(along = packages)) {
+        contentsfile <- system.file("CONTENTS", package = packages[i],
+                                    lib.loc = lib.loc)
+    
+        if (nchar(contentsfile) == 0)
+            next
+    
+        entries <- grep("Entry", readLines(contentsfile), value = TRUE)
+        entries <- sub(paste("Entry:", packages[i]), "", entries)
+    
+        result[i] <- all(envnames %in% entries)
+    }
+    
+    result
+}
+
 .aaf.raw <- function(probeids, chip, type) {
 
     chkPkgs(chip)
