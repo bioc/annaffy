@@ -13,4 +13,5 @@ Description: Functions for handling data from Bioconductor Affymetrix
         various criteria.
 License: LGPL
 SaveImage: yes
+biocViews: OneChannel, Microarray, Annotation, GO, Pathways, ReportWriting
 
