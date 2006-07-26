@@ -7,6 +7,10 @@ chkPkgs <- function(pkg) {
     if (length(pkgLoc) == 0) { ## pkg not installed
         print(paste("You are missing", pkg,
                     "looking to see if it is available."))
+        require(reposTools, quietly = TRUE) || stop(paste("The reposTools package is",
+                              "required to automatically install ", pkg,".\n",
+                              "You can install both reposTools and ", pkg,
+                              " using biocLite()."), call. = FALSE)
         biocContribUrl <- sapply(Biobase:::biocReposList(), contrib.url)
         biocPkgs <- available.packages(biocContribUrl)
         if (pkg %in% biocPkgs[, "Package"]) {
