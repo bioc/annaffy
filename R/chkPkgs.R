@@ -32,3 +32,18 @@ chkPkgs <- function(pkg) {
     ## Record that we've already checked this package
     options(aafChkPkgs = c(getOption("aafChkPkgs"), pkg))
 }
+
+userQuery <- function (msg, allowed = c("y","n")) 
+{
+    repeat {
+        allowMsg <- paste("[", paste(allowed, collapse = "/"), 
+            "] ", sep = "")
+        outMsg <- paste(msg, allowMsg)
+        cat(outMsg)
+        ans <- readLines(n = 1)
+        if (ans %in% allowed) 
+            break
+        else cat(paste(ans, "is not a valid response, try again.\n"))
+    }
+    ans
+}
