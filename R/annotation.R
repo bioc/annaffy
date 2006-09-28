@@ -1,7 +1,7 @@
 is.annpkg <- function(packages, lib.loc = NULL) {
     
     envnames <- c("ACCNUM", "CHR", "CHRLOC", "ENZYME", "GENENAME", "GO",
-                  "LOCUSID", "MAP", "PATH", "PMID", "SYMBOL", "UNIGENE")
+                  "ENTREZID", "MAP", "PATH", "PMID", "SYMBOL", "UNIGENE")
     
     result <- logical(length(packages))
     
@@ -116,7 +116,7 @@ aaf.handler <- function (probeids, chip, name)
                  "Chromosome" = "CHR",
                  "Chromosome Location" = "CHRLOC",
                  "GenBank" = "ACCNUM",
-                 "LocusLink" = "LOCUSID",
+                 "LocusLink" = "ENTREZID",
                  "Cytoband" = c("MAP", "ACCNUM"),
                  "UniGene" = "UNIGENE",
                  "PubMed" = "PMID",
@@ -375,7 +375,7 @@ setClass("aafLocusLink", "integer", prototype = integer(0))
 
 aafLocusLink <- function(probeids, chip) {
 
-    return(.aaf.integer(probeids, chip, "LOCUSID", "aafLocusLink"))
+    return(.aaf.integer(probeids, chip, "ENTREZID", "aafLocusLink"))
 }
 
 setMethod("getURL", "aafLocusLink", function(object) {
