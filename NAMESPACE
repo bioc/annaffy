@@ -1,3 +1,4 @@
+importClassesFrom("Biobase", "AssayData")
 exportPattern("^aaf")
 export(selectorWidget,is.annpkg)
 S3method("$", aafTable)
