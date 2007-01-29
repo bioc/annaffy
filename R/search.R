@@ -3,9 +3,10 @@ aafSearchText <- function(chip, colnames, text, logic = "OR") {
 	require(chip, character.only = TRUE) ||
         stop(paste("Couldn't load data package", chip))
 
-    environment <- paste(chip, "GENENAME", sep="")
+    prefix <- annpkg_prefix(chip)
+    environment <- paste(prefix, "GENENAME", sep="")
 
-    probeids <- do.call("ls", list(as.name(environment)))
+    probeids <- ls(get(environment))
     
     ann <- aafTableAnn(probeids, chip, colnames)
     
@@ -30,19 +31,21 @@ aafSearchGO <- function(chip, ids, descendents = TRUE, logic = "OR") {
 	require(chip, character.only = TRUE) ||
         stop(paste("Couldn't load data package", chip))
 
+    prefix <- annpkg_prefix(chip)
     if (descendents)
-    	environment <- paste(chip, "GO2ALLPROBES", sep="")
+    	environment <- paste(prefix, "GO2ALLPROBES", sep="")
     else
-    	environment <- paste(chip, "GO2PROBE", sep="")
+    	environment <- paste(prefix, "GO2PROBE", sep="")
 
     probeids <- NULL
+    environment <- get(environment)
     for (id in ids) {
 		if (is.numeric(id) || length(grep("^[0-9]+$", id)))
 			id <- sprintf("GO:%07i", as.integer(id))
 		
-		if (! do.call("exists", list(id, as.name(environment))))
+		if (! exists(id, environment))
 			next
-        probes <- do.call("get", list(id, as.name(environment)))
+        probes <- get(id, environment)
         if (length(probes) == 1 && is.na(probes))
             next
         if (logic == "OR" || is.null(probeids))

@@ -3,7 +3,7 @@
 % likely to be overwritten.
 %
 %\VignetteIndexEntry{annaffy Primer}
-%\VignetteDepends{Biobase, GO, KEGG, multtest, hgu95av2}
+%\VignetteDepends{Biobase, GO, KEGG, multtest, hgu95av2db}
 %\VignetteKeywords{HTML, URL}
 %\VignettePackage{annaffy}
 \documentclass[12pt]{article}
@@ -71,13 +71,13 @@ package are mapped to empty objects.)
 library(annaffy)
 @
 
-(For the purpose of demonstration, we will use the \verb+hgu95av2+
+(For the purpose of demonstration, we will use the \verb+hgu95av2db+
 metadata package and probe ids from the \verb+aafExpr+ dataset.)
 
 <<>>=
 data(aafExpr)
 probeids <- geneNames(aafExpr)
-symbols <- aafSymbol(probeids, "hgu95av2")
+symbols <- aafSymbol(probeids, "hgu95av2db")
 symbols[[54]]
 symbols[55:57]
 @
@@ -96,7 +96,7 @@ getText(symbols[54:57])
 Other annotation constructors return more complex data structures:
 
 <<>>=
-gos <- aafGO(probeids, "hgu95av2")
+gos <- aafGO(probeids, "hgu95av2db")
 gos[[3]]
 @
 
@@ -139,7 +139,7 @@ sequenced the gene fragment. (See this URL
 \href{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=search&db=nucleotide&term=U41068%5BACCN%5D&doptcmdl=GenBank}{here}.)
 
 <<>>=
-gbs <- aafGenBank(probeids, "hgu95av2")
+gbs <- aafGenBank(probeids, "hgu95av2db")
 getURL(gbs[[1]])
 @
 
@@ -153,7 +153,7 @@ URL
 \href{http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&dopt=Graphics&list_uids=2322}{here}.)
 
 <<>>=
-lls <- aafLocusLink(probeids, "hgu95av2") 
+lls <- aafLocusLink(probeids, "hgu95av2db") 
 getURL(lls[[2]])
 @
 
@@ -164,7 +164,7 @@ annotations. (See this URL
 \href{http://www.ncbi.nlm.nih.gov/mapview/map_search.cgi?direct=on&query=U02687%5BACCN%5D}{here}.)
 
 <<>>=
-bands <- aafCytoband(probeids, "hgu95av2") 
+bands <- aafCytoband(probeids, "hgu95av2db") 
 getURL(bands[[2]])
 @
 
@@ -176,7 +176,7 @@ only include the paper in which the gene was cloned. (See this URL
 \href{http://www.ncbi.nih.gov/entrez/query.fcgi?tool=bioconductor&cmd=Retrieve&db=PubMed&list_uids=15059064%2c14759363%2c14737077%2c14670924%2c14630076%2c14604974%2c14562119%2c14504097%2c12969963%2c12935959%2c12926083%2c12854887%2c12842996%2c12816873%2c12691136%2c12676789%2c12481903%2c12468433%2c12393674%2c12239147%2c12239146%2c12070009%2c12060771%2c12036858%2c11983110%2c11971190%2c8394751%2c7507245}{here}.)
 
 <<>>=
-pmids <- aafPubMed(probeids, "hgu95av2")
+pmids <- aafPubMed(probeids, "hgu95av2db")
 getURL(pmids[[2]])
 @
 
@@ -206,7 +206,7 @@ pathways a gene is involved in. (See this URL
 Look for the enzyme in question to be highlighted in red.)
 
 <<>>=
-paths <- aafPathway(probeids, "hgu95av2")
+paths <- aafPathway(probeids, "hgu95av2db")
 getURL(paths[[5]])
 @
 
@@ -320,7 +320,7 @@ chips, download the appropriate data package from the Bioconductor
 website.
 
 <<>>=
-anntable <- aafTableAnn(probeids[1:50], "hgu95av2", anncols)
+anntable <- aafTableAnn(probeids[1:50], "hgu95av2db", anncols)
 @
 
 To see what has been produced so far, use the \verb+saveHTML()+
@@ -399,13 +399,13 @@ For complex annotation structures, the textual representation can
 include a variety of information, including numeric identifiers
 and textual descriptions.
 
-For the purposes of demonstration, we will use the hgu95av2 annotation
+For the purposes of demonstration, we will use the hgu95av2db annotation
 data package available through Bioconductor.
 
 <<>>=
-library(hgu95av2)
+library(hgu95av2db)
 probeids <- ls(hgu95av2SYMBOL)
-gos <- aafGO(probeids[1:2], "hgu95av2")
+gos <- aafGO(probeids[1:2], "hgu95av2db")
 getText(gos)
 @
 
@@ -415,7 +415,7 @@ will be discussed later.) For instance, to find all the kinases on
 a chip, simply do a text search of Description for kinases.
 
 <<>>=
-kinases <- aafSearchText("hgu95av2", "Description", "kinase")
+kinases <- aafSearchText("hgu95av2db", "Description", "kinase")
 kinases[1:5]
 print(length(kinases))
 @
@@ -426,7 +426,7 @@ with a single function call. For instance, to find all genes with
 use the following function call.
 
 <<>>=
-probes <- aafSearchText("hgu95av2", c("Description", "Pathway"),
+probes <- aafSearchText("hgu95av2db", c("Description", "Pathway"),
                         c("ribosome", "polymerase"))
 print(length(probes))
 @
@@ -442,7 +442,7 @@ exact string. To find all probes whose description contains both
 "DNA" and "polymerase", use the following function call.
 
 <<>>=
-probes <- aafSearchText("hgu95av2", "Description",
+probes <- aafSearchText("hgu95av2db", "Description",
                         c("DNA", "polymerase"), logic = "AND")
 print(length(probes))
 @
@@ -454,7 +454,7 @@ of a BLAST job.
 
 <<>>=
 gbs <- c("AF035121", "AL021546", "AJ006123", "AL080082", "AI289489")
-aafSearchText("hgu95av2", "GenBank", gbs)
+aafSearchText("hgu95av2db", "GenBank", gbs)
 @
 
 Lastly, two points for power users. One, the text search is always
@@ -479,9 +479,9 @@ use numeric or character vectors, either excluding or including
 the "GO:" prefix and leading zeros.
 
 <<>>=
-aafSearchGO("hgu95av2", c("GO:0000002", "GO:0000008"))
-aafSearchGO("hgu95av2", c("2", "8"))
-aafSearchGO("hgu95av2", c(2, 8))
+aafSearchGO("hgu95av2db", c("GO:0000002", "GO:0000008"))
+aafSearchGO("hgu95av2db", c("2", "8"))
+aafSearchGO("hgu95av2db", c(2, 8))
 @
 
 A good source for finding relevant Gene Ontology identifiers is

@@ -1,3 +1,4 @@
+import("AnnotationDbi")
 importClassesFrom("Biobase", "AssayData")
 
 exportPattern("^aaf")

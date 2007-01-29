@@ -6,20 +6,46 @@ is.annpkg <- function(packages, lib.loc = NULL) {
     result <- logical(length(packages))
     
     for (i in seq(along = packages)) {
-        contentsfile <- system.file("CONTENTS", package = packages[i],
-                                    lib.loc = lib.loc)
-    
-        if (nchar(contentsfile) == 0)
-            next
-    
-        entries <- grep("Entry", readLines(contentsfile), value = TRUE)
-        entries <- sub(paste("Entry:", packages[i]), "", entries)
-    
+        wasLoaded <- FALSE
+        loadOk <- FALSE
+        pkgSearchNm <- paste("package", packages[i], sep=":")
+        if (pkgSearchNm %in% search()) {
+            wasLoaded <- TRUE
+            loadOk <- TRUE
+        }
+        if (!wasLoaded)
+          loadOk <- suppressWarnings(require(packages[i],
+                                             character.only=TRUE,
+                                             quietly=TRUE))
+        if (!loadOk)
+          stop("package ", packages[i], " is not available")
+        pkgEnv <- as.environment(pkgSearchNm)
+        prefix <- annpkg_prefix(packages[i])
+        entries <- sub(prefix, "", grep(prefix, ls(pkgEnv), value=TRUE))
         result[i] <- all(envnames %in% entries)
+        if (!wasLoaded)
+          detach(pos=match(pkgSearchNm, search()))
     }
     
     result
 }
+
+is_dbpackage <- function(chip) {
+    pkgEnv <- as.environment(paste("package", chip, sep=":"))
+    exists("getDb", pkgEnv)
+}
+
+dbpackage_prefix <- function(chip) {
+    substr(chip, 1, nchar(chip) - 2)
+}
+
+annpkg_prefix <- function(chip) {
+    if (is_dbpackage(chip))
+      dbpackage_prefix(chip)
+    else
+      chip
+}
+
 
 .aaf.raw <- function(probeids, chip, type) {
 
@@ -27,7 +53,7 @@ is.annpkg <- function(packages, lib.loc = NULL) {
 
     require(chip, character.only = TRUE) ||
         stop(paste("Couldn't load data package", chip))
-
+    chip <- annpkg_prefix(chip)
     environment <- paste(chip, type, sep="")
 
     do.call("mget", list(probeids, as.name(environment), ifnotfound=NA))
@@ -127,9 +153,12 @@ aaf.handler <- function (probeids, chip, name)
         require(chip, character.only = TRUE) ||
         stop(paste("Couldn't load data package", chip))
         use <- rep(TRUE, length(deps))
-        for (i in seq(along = deps))
-            if (any(!(paste(chip, deps[[i]], sep="") %in% ls(paste("package:", chip, sep="")))))
-                use[i] <- FALSE
+        pkgSyms <- ls(paste("package:", chip, sep=""))
+        prefix <- annpkg_prefix(chip)
+        for (i in seq(along = deps)) {
+            if (any(!(paste(prefix, deps[[i]], sep="") %in% pkgSyms)))
+              use[i] <- FALSE
+        }
         deps <- deps[use]
     }
     if( missing(probeids) )
