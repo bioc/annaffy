@@ -24,6 +24,7 @@
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 \examples{
 pkgnames <- installed.packages()[,"Package"]
+pkgnames <- pkgnames[1:5]
 pkgnames[is.annpkg(pkgnames)]
 }
 \keyword{ file }
