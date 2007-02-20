@@ -529,13 +529,13 @@ setMethod("getText", "aafGO", function(object) {
 
 setMethod("getURL", "aafGO", function(object) {
 
-    url <- "http://godatabase.org/cgi-bin/go.cgi?open_0="
+    url <- "http://www.godatabase.org/cgi-bin/amigo/go.cgi?view=query&query="
 
     if( !length(object) )
         return(character(0))
     url <- paste(url, object[[1]]@id, sep = "")
     for(i in 2:length(object))
-        url <- paste(url, object[[i]]@id, sep = "&open_0=")
+        url <- paste(url, object[[i]]@id, sep = "%0a")
     return(url)
 })
 
@@ -579,7 +579,7 @@ setMethod("getText", "aafGOItem", function(object) {
 
 setMethod("getURL", "aafGOItem", function(object) {
 
-    url <- "http://godatabase.org/cgi-bin/go.cgi?open_0="
+    url <- "http://www.godatabase.org/cgi-bin/amigo/go.cgi?view=details&query="
 
     if( !length(object@id) )
         return(character(0))
