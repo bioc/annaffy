@@ -32,7 +32,7 @@ is.annpkg <- function(packages, lib.loc = NULL) {
 
 is_dbpackage <- function(chip) {
     pkgEnv <- as.environment(paste("package", chip, sep=":"))
-    exists("getDb", pkgEnv)
+    exists("db_conn", pkgEnv)
 }
 
 dbpackage_prefix <- function(chip) {
