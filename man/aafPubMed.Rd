@@ -25,7 +25,7 @@ aafPubMed(probeids, chip)
 \examples{
 if (require(hgu95av2)) {
     data(aafExpr)
-    probes <- geneNames(aafExpr)
+    probes <- featureNames(aafExpr)
     pmids <- aafPubMed(probes, "hgu95av2")
     show(pmids[6:10])
 }

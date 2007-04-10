@@ -25,7 +25,7 @@ aafGO(probeids, chip)
 \examples{
 if (require(hgu95av2)) {
     data(aafExpr)
-    probes <- geneNames(aafExpr)
+    probes <- featureNames(aafExpr)
     gos <- aafGO(probes, "hgu95av2")
     show(gos[6:10])
 }

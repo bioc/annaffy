@@ -25,7 +25,7 @@ aafChromosome(probeids, chip)
 \examples{
 if (require(hgu95av2)) {
     data(aafExpr)
-    probes <- geneNames(aafExpr)
+    probes <- featureNames(aafExpr)
     chromosomes <- aafChromosome(probes, "hgu95av2")
     show(chromosomes[6:10])
 }

@@ -25,7 +25,7 @@ aafSymbol(probeids, chip)
 \examples{
 if (require(hgu95av2)) {
     data(aafExpr)
-    probes <- geneNames(aafExpr)
+    probes <- featureNames(aafExpr)
     symbols <- aafSymbol(probes, "hgu95av2")
     show(symbols[6:10])
 }

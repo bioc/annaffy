@@ -25,7 +25,7 @@ aafGenBank(probeids, chip)
 \examples{
 if (require(hgu95av2)) {
     data(aafExpr)
-    probes <- geneNames(aafExpr)
+    probes <- featureNames(aafExpr)
     gbs <- aafGenBank(probes, "hgu95av2")
     show(gbs[6:10])
 }

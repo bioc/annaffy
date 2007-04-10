@@ -142,9 +142,9 @@ aafTableAnn <- function(probeids, chip, colnames = aaf.handler(chip = chip),
 }
 
 aafTableInt <- function(exprSet, colnames = sampleNames(exprSet), 
-                        probeids = geneNames(exprSet)) {
+                        probeids = featureNames(exprSet)) {
     
-    range <- match(probeids, geneNames(exprSet))
+    range <- match(probeids, featureNames(exprSet))
     expr <- exprs(exprSet)
     table <- vector("list", dim(expr)[2])
     for (col in 1:length(table)) {

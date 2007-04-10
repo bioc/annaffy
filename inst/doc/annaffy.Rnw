@@ -68,7 +68,7 @@ populated with annotation data. (\verb+NA+ values in the annotation
 package are mapped to empty objects.)
 
 <<results=hide>>=
-library(annaffy)
+library("annaffy")
 @
 
 (For the purpose of demonstration, we will use the \verb+hgu95av2db+
@@ -76,7 +76,7 @@ metadata package and probe ids from the \verb+aafExpr+ dataset.)
 
 <<>>=
 data(aafExpr)
-probeids <- geneNames(aafExpr)
+probeids <- featureNames(aafExpr)
 symbols <- aafSymbol(probeids, "hgu95av2db")
 symbols[[54]]
 symbols[55:57]
@@ -273,7 +273,7 @@ will only use the first 50 of those probes.
 <<>>=
 teststat <- mt.teststat(exprs(aafExpr), class)
 index <- order(abs(teststat), decreasing = TRUE)
-probeids <- geneNames(aafExpr)[index]
+probeids <- featureNames(aafExpr)[index]
 @
 
 \subsection{Annotating the Probes}

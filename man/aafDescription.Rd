@@ -25,7 +25,7 @@ aafDescription(probeids, chip)
 \examples{
 if (require(hgu95av2)) {
     data(aafExpr)
-    probes <- geneNames(aafExpr)
+    probes <- featureNames(aafExpr)
     descriptions <- aafDescription(probes, "hgu95av2")
     show(descriptions[6:10])
 }

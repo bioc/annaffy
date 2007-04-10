@@ -25,7 +25,7 @@ aafFunction(probeids, chip)
 \examples{
 if (require(hgu95av2)) {
     data(aafExpr)
-    probes <- geneNames(aafExpr)
+    probes <- featureNames(aafExpr)
     functions <- aafFunction(probes, "hgu95av2")
     show(functions[6:10])
 }

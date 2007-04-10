@@ -22,7 +22,7 @@ aafProbe(probeids)
 \examples{
 if (require(hgu95av2)) {
     data(aafExpr)
-    probes <- geneNames(aafExpr)
+    probes <- featureNames(aafExpr)
     probesets <- aafProbe(probes)
     getURL(probesets[6:10])
 }

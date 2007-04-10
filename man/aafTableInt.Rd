@@ -12,7 +12,7 @@
 
 \usage{
 aafTableInt(exprSet, colnames = sampleNames(exprSet), 
-            probeids = geneNames(exprSet))
+            probeids = featureNames(exprSet))
 }
 \arguments{
   \item{exprSet}{object of class \code{exprSet}}

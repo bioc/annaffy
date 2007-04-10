@@ -25,7 +25,7 @@ aafChromLoc(probeids, chip)
 \examples{
 if (require(hgu95av2)) {
     data(aafExpr)
-    probes <- geneNames(aafExpr)
+    probes <- featureNames(aafExpr)
     locations <- aafChromLoc(probes, "hgu95av2")
     show(locations[6:10])
 }
