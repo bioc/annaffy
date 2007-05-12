@@ -13,6 +13,6 @@ Description: Functions for handling data from Bioconductor Affymetrix
         online databases. Allows searching biological metadata using
         various criteria.
 License: LGPL
-SaveImage: yes
+LazyLoad: yes
 biocViews: OneChannel, Microarray, Annotation, GO, Pathways, ReportWriting
 
