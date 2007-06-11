@@ -36,7 +36,7 @@ is_dbpackage <- function(chip) {
 }
 
 dbpackage_prefix <- function(chip) {
-    substr(chip, 1, nchar(chip) - 2)
+    substr(chip, 1L, nchar(chip) - 3L)
 }
 
 annpkg_prefix <- function(chip) {
