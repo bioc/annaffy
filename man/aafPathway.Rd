@@ -26,7 +26,7 @@ aafPathway(probeids, chip)
 if (require(hgu95av2)) {
     data(aafExpr)
     probes <- featureNames(aafExpr)
-    pathways <- aafPathway(probes, "hgu95av2")
+    pathways <- aafPathway(probes, "hgu95av2.db")
     show(pathways[6:10])
 }
 }

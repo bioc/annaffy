@@ -26,7 +26,7 @@ aafSymbol(probeids, chip)
 if (require(hgu95av2)) {
     data(aafExpr)
     probes <- featureNames(aafExpr)
-    symbols <- aafSymbol(probes, "hgu95av2")
+    symbols <- aafSymbol(probes, "hgu95av2.db")
     show(symbols[6:10])
 }
 }

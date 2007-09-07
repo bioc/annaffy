@@ -24,8 +24,8 @@ aafSearchText(chip, colnames, text, logic = "OR")
 
 \examples{
 if (require(hgu95av2)) {
-    aafSearchText("hgu95av2", "Description", c("kinase", "interferon"))
-    aafSearchText("hgu95av2", c("Gene Ontology", "Pathway"), "ribosome")
+    aafSearchText("hgu95av2.db", "Description", c("kinase", "interferon"))
+    aafSearchText("hgu95av2.db", c("Gene Ontology", "Pathway"), "ribosome")
 }
 }
 

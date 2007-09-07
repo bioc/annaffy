@@ -26,7 +26,7 @@ aafChromosome(probeids, chip)
 if (require(hgu95av2)) {
     data(aafExpr)
     probes <- featureNames(aafExpr)
-    chromosomes <- aafChromosome(probes, "hgu95av2")
+    chromosomes <- aafChromosome(probes, "hgu95av2.db")
     show(chromosomes[6:10])
 }
 }

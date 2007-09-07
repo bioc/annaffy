@@ -26,7 +26,7 @@ aafUniGene(probeids, chip)
 if (require(hgu95av2)) {
     data(aafExpr)
     probes <- featureNames(aafExpr)
-    ugs <- aafUniGene(probes, "hgu95av2")
+    ugs <- aafUniGene(probes, "hgu95av2.db")
     show(ugs[6:10])
 }
 }

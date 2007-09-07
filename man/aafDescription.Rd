@@ -26,7 +26,7 @@ aafDescription(probeids, chip)
 if (require(hgu95av2)) {
     data(aafExpr)
     probes <- featureNames(aafExpr)
-    descriptions <- aafDescription(probes, "hgu95av2")
+    descriptions <- aafDescription(probes, "hgu95av2.db")
     show(descriptions[6:10])
 }
 }

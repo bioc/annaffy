@@ -26,7 +26,7 @@ aafLocusLink(probeids, chip)
 if (require(hgu95av2)) {
     data(aafExpr)
     probes <- featureNames(aafExpr)
-    lls <- aafLocusLink(probes, "hgu95av2")
+    lls <- aafLocusLink(probes, "hgu95av2.db")
     show(lls[6:10])
 }
 }

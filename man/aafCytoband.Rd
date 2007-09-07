@@ -26,7 +26,7 @@ aafCytoband(probeids, chip)
 if (require(hgu95av2)) {
     data(aafExpr)
     probes <- featureNames(aafExpr)
-    bands <- aafCytoband(probes, "hgu95av2")
+    bands <- aafCytoband(probes, "hgu95av2.db")
     show(bands[6:10])
 }
 }

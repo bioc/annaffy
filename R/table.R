@@ -92,8 +92,10 @@ aafTable <- function(..., items = list(...), colnames = names(items),
         else
             table[[col]] <- new("aafList", as.list(items[[col]]))
         if (signed)
-            for (row in 1:len)
+            for (row in 1:len) {
                 class(table[[col]][[row]]) <- "aafSigned"
+                table[[col]][[row]] <- asS4(table[[col]][[row]])
+            }
     }
     names(table) <- colnames
     
@@ -116,8 +118,10 @@ aafTableFrame <- function(frame, colnames = names(frame),
     for (col in 1:dim(frame)[2]) {
         table[[col]] <- new("aafList", as.list(frame[,col]))
         if (signed)
-            for (row in 1:len)
+            for (row in 1:len) {
                 class(table[[col]][[row]]) <- "aafSigned"
+                table[[col]][[row]] <- asS4(table[[col]][[row]])
+            }
     }
     names(table) <- colnames
     
@@ -149,9 +153,12 @@ aafTableInt <- function(exprSet, colnames = sampleNames(exprSet),
     table <- vector("list", dim(expr)[2])
     for (col in 1:length(table)) {
         table[[col]] <- as.list(as.double(expr[range,col]))
-        class(table[[col]]) <- "aafList"
-        for (row in 1:length(range))
+        for (row in 1:length(range)) {
             class(table[[col]][[row]]) <- "aafIntensity"
+            table[[col]][[row]] <- asS4(table[[col]][[row]])
+        }
+        class(table[[col]]) <- "aafList"
+        table[[col]] <- asS4(table[[col]])
     }
     names(table) = colnames
     
@@ -282,8 +289,10 @@ rbind.aafTable <- function(..., deparse.level = 1)  {
         for (i in 1:length(cols))
             table[[i]] <- c(table[[i]], tab[[i]])
     }
-    for (i in 1:length(cols))
+    for (i in 1:length(cols)) {
         class(table[[i]]) <- "aafList"
+        table[[i]] <- asS4(table[[i]])
+    }
     
     return(return(new("aafTable", probeids = probeids, table = table)))
 }

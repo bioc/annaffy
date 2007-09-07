@@ -19,9 +19,8 @@ form \code{new("aafCytoband", band, genbank)}.
     \item{\code{band}:}{
       Object of class \code{character} containing genomic cytoband
     }
-    \item{\code{genbank}:}{
-      Object of class \code{character} containing containing GenBank
-      accession number
+    \item{\code{gene}:}{
+      Object of class \code{character} containing containing Gene ID
     }
   }
 }

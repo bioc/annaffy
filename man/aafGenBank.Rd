@@ -26,7 +26,7 @@ aafGenBank(probeids, chip)
 if (require(hgu95av2)) {
     data(aafExpr)
     probes <- featureNames(aafExpr)
-    gbs <- aafGenBank(probes, "hgu95av2")
+    gbs <- aafGenBank(probes, "hgu95av2.db")
     show(gbs[6:10])
 }
 }

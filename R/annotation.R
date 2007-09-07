@@ -73,7 +73,7 @@ annpkg_prefix <- function(chip) {
     }
     class(result) <- "aafList"
 
-    return(result)
+    asS4(result)
 }
 
 .aaf.integer <- function(probeids, chip, type, class) {
@@ -94,11 +94,11 @@ annpkg_prefix <- function(chip) {
             ann <- tmp[!is.na(tmp)]
         }
         attributes(ann) <- attrs
-        result[[i]] <- ann
+        result[[i]] <- asS4(ann)
     }
     class(result) <- "aafList"
 
-    return(result)
+    asS4(result)
 }
 
 .aaf.goterm <- function (num) {
@@ -142,8 +142,8 @@ aaf.handler <- function (probeids, chip, name)
                  "Chromosome" = "CHR",
                  "Chromosome Location" = "CHRLOC",
                  "GenBank" = "ACCNUM",
-                 "LocusLink" = "ENTREZID",
-                 "Cytoband" = c("MAP", "ACCNUM"),
+                 "Gene" = "ENTREZID",
+                 "Cytoband" = c("MAP", "ENTREZID"),
                  "UniGene" = "UNIGENE",
                  "PubMed" = "PMID",
                  "Gene Ontology" = "GO",
@@ -172,6 +172,7 @@ aaf.handler <- function (probeids, chip, name)
                Chromosome = aafChromosome(probeids, chip),
                "Chromosome Location" = aafChromLoc(probeids, chip),
                GenBank = aafGenBank(probeids, chip),
+               Gene = aafLocusLink(probeids, chip),
                LocusLink = aafLocusLink(probeids, chip),
                Cytoband = aafCytoband(probeids, chip),
                UniGene = aafUniGene(probeids, chip),
@@ -289,7 +290,7 @@ setMethod("[", "aafList", function(x, i, j, ..., drop = F) {
 
     result <- x@.Data[i]
     class(result) <- class(x)
-    return(result)
+    asS4(result)
 })
 
 setMethod("show", "aafList", function(object) {
@@ -319,8 +320,10 @@ setClass("aafProbe", "character", prototype = character(0))
 aafProbe <- function(probeids) {
 
     probes <- as.list(probeids)
-    for(i in 1:length(probes))
+    for(i in 1:length(probes)) {
         class(probes[[i]]) <- "aafProbe"
+        probes[[i]] <- asS4(probes[[i]])
+    }
 
     return(new("aafList", probes))
 }
@@ -409,7 +412,7 @@ aafLocusLink <- function(probeids, chip) {
 
 setMethod("getURL", "aafLocusLink", function(object) {
 
-    url <- "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=gene&cmd=Retrieve&dopt=Graphics&list_uids="
+    url <- "http://www.ncbi.nlm.nih.gov/sites/entrez?Db=gene&Cmd=DetailsSearch&Term="
 
     if( !length(object) )
         return(character(0))
@@ -419,23 +422,25 @@ setMethod("getURL", "aafLocusLink", function(object) {
 ## Define class aafCytoband
 
 setClass("aafCytoband", representation(band = "character",
-                                       genbank = "character"),
+                                       gene = "character"),
          prototype = list(band = character(0),
-                          genbank = character(0)))
+                          gene = character(0)))
 
 aafCytoband <- function(probeids, chip) {
 
     band <- .aaf.raw(probeids, chip, "MAP")
-    genbank <- .aaf.raw(probeids, chip, "ACCNUM")
+    gene <- .aaf.raw(probeids, chip, "ENTREZID")
     result <- vector("list", length(probeids))
     navals <- is.na(band)
     result[which(navals)] <- list(new("aafCytoband"))
     result[which(!navals)] <- list(list())
-    for(i in which(!navals))
-        attributes(result[[i]]) <- list(band = band[[i]], genbank = genbank[[i]], class = "aafCytoband")
+    for(i in which(!navals)) {
+        attributes(result[[i]]) <- list(band = band[[i]], gene = gene[[i]], class = "aafCytoband")
+        result[[i]] <- asS4(result[[i]])
+    }
     class(result) <- "aafList"
 
-    return(result)
+    asS4(result)
 }
 
 setMethod("getText", "aafCytoband", function(object) {
@@ -447,19 +452,18 @@ setMethod("getText", "aafCytoband", function(object) {
 
 setMethod("getURL", "aafCytoband", function(object) {
 
-    url <- "http://www.ncbi.nlm.nih.gov/mapview/map_search.cgi?direct=on&query="
-    urlsuffix <- "%5BACCN%5D"
+    url <- "http://www.ncbi.nlm.nih.gov/mapview/map_search.cgi?direct=on&idtype=gene&id="
 
     if( !length(object@band) )
         return(character(0))
-    return(paste(url, object@genbank, urlsuffix, sep = ""))
+    return(paste(url, object@gene, sep = ""))
 })
 
 setMethod("show", "aafCytoband", function(object) {
 
     cat("An object of class \"aafCytoband\"\n")
-    cat("@band    ", object@band, "\n", sep = "\"")
-    cat("@genbank ", object@genbank, "\n", sep = "\"")
+    cat("@band ", object@band, "\n", sep = "\"")
+    cat("@gene ", object@gene, "\n", sep = "\"")
 })
 
 ## Define class aafUniGene
@@ -539,15 +543,16 @@ aafGO <- function(probeids, chip) {
                 if( length(nametype) ) {
                     result <- list()
                     attributes(result) <- list(id = go[[j]]$GOID, name = nametype$name, type = nametype$type, evid = go[[j]]$Evidence, class = "aafGOItem")
-                    results[[i]] <- c(results[[i]], list(result))
+                    results[[i]] <- c(results[[i]], list(asS4(result)))
                 }
             }
         }
         attributes(results[[i]]) <- attrs
+        results[[i]] <- asS4(results[[i]])
     }
     class(results) <- "aafList"
 
-    return(results)
+    asS4(results)
 }
 
 setMethod("getText", "aafGO", function(object) {
@@ -608,7 +613,7 @@ setMethod("getText", "aafGOItem", function(object) {
 
 setMethod("getURL", "aafGOItem", function(object) {
 
-    url <- "http://amigo.geneontology.org/cgi-bin/amigo/go.cgi?view=query&query="
+    url <- "http://amigo.geneontology.org/cgi-bin/amigo/go.cgi?view=details&query="
 
     if( !length(object@id) )
         return(character(0))
@@ -655,14 +660,16 @@ aafPathway <- function(probeids, chip) {
             for(j in 1:length(pathway)) {
                 result[[j]] <- list()
                 attributes(result[[j]]) <- list(id = pathway[j], name = name[[j]], enzyme = enzyme, class = "aafPathwayItem")
+                result[[j]] <- asS4(result[[j]])
             }
             results[[i]] <- result
         }
         attributes(results[[i]]) <- attrs
+        results[[i]] <- asS4(results[[i]])
     }
     class(results) <- "aafList"
 
-    return(results)
+    asS4(results)
 }
 
 setMethod("getText", "aafPathway", function(object) {
