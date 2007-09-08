@@ -23,7 +23,7 @@ aafUniGene(probeids, chip)
 \author{Colin A. Smith, \email{annaffy@colinsmith.org}}
 
 \examples{
-if (require(hgu95av2)) {
+if (require(hgu95av2.db)) {
     data(aafExpr)
     probes <- featureNames(aafExpr)
     ugs <- aafUniGene(probes, "hgu95av2.db")
