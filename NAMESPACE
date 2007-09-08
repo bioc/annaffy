@@ -15,7 +15,6 @@ exportClasses(
               "aafChromosome",
               "aafCytoband",
               "aafDescription",
-              "aafFunction",
               "aafGenBank",
               "aafGO",
               "aafGOItem",

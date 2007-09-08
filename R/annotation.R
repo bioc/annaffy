@@ -138,7 +138,6 @@ aaf.handler <- function (probeids, chip, name)
                  "Probe" = character(0),
                  "Symbol" = "SYMBOL",
                  "Description" = "GENENAME",
-                 "Function" = "SUMFUNC",
                  "Chromosome" = "CHR",
                  "Chromosome Location" = "CHRLOC",
                  "GenBank" = "ACCNUM",
@@ -168,7 +167,6 @@ aaf.handler <- function (probeids, chip, name)
                Probe = aafProbe(probeids),
                Symbol = aafSymbol(probeids, chip),
                Description = aafDescription(probeids, chip),
-               Function = aafFunction(probeids, chip),
                Chromosome = aafChromosome(probeids, chip),
                "Chromosome Location" = aafChromLoc(probeids, chip),
                GenBank = aafGenBank(probeids, chip),
@@ -353,15 +351,6 @@ setClass("aafDescription", "character", prototype = character(0))
 aafDescription <- function(probeids, chip) {
 
     return(.aaf.character(probeids, chip, "GENENAME", "aafDescription"))
-}
-
-## Define class aafFunction
-
-setClass("aafFunction", "character", prototype = character(0))
-
-aafFunction <- function(probeids, chip) {
-
-    return(.aaf.character(probeids, chip, "SUMFUNC", "aafFunction"))
 }
 
 ## Define class aafChromosome
