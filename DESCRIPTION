@@ -1,11 +1,11 @@
 Package: annaffy
-Version: 1.9.4
+Version: 1.9.5
 Date: 2007-09-08
 Title: Annotation tools for Affymetrix biological metadata
 Author: Colin A. Smith <annaffy@colinsmith.org>
 Maintainer: Colin A. Smith <annaffy@colinsmith.org>
 Depends: R (>= 2.5.0), methods, Biobase, GO (>= 1.6.0), KEGG
-Imports: AnnotationDbi (>= 0.0.58)
+Imports: AnnotationDbi (>= 0.1.15)
 Suggests: hgu95av2.db, multtest, tcltk
 Description: Functions for handling data from Bioconductor Affymetrix
         annotation data packages. Produces compact HTML and text
