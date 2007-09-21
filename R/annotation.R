@@ -32,6 +32,8 @@ is.annpkg <- function(packages, lib.loc = NULL) {
 
 is_dbpackage <- function(chip) {
     pkgEnv <- as.environment(paste("package", chip, sep=":"))
+    if (substr(chip, nchar(chip) - 2, nchar(chip)) == ".db")
+        chip <- substr(chip, 1, nchar(chip) - 3)
     exists(paste(chip, "dbconn", sep="_"), pkgEnv, inherits=FALSE)
 }
 
