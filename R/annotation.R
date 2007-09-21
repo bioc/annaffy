@@ -1,3 +1,16 @@
+annpkg_prefix <- function(chip) {
+    if (substr(chip, nchar(chip) - 2L, nchar(chip)) == ".db")
+        substr(chip, 1L, nchar(chip) - 3L)
+    else
+        chip
+}
+
+is_dbpackage <- function(chip) {
+    pkgEnv <- as.environment(paste("package", chip, sep=":"))
+    chip <- annpkg_prefix(chip)
+    exists(paste(chip, "dbconn", sep="_"), pkgEnv, inherits=FALSE)
+}
+
 is.annpkg <- function(packages, lib.loc = NULL) {
     
     envnames <- c("ACCNUM", "CHR", "CHRLOC", "ENZYME", "GENENAME", "GO",
@@ -29,25 +42,6 @@ is.annpkg <- function(packages, lib.loc = NULL) {
     
     result
 }
-
-is_dbpackage <- function(chip) {
-    pkgEnv <- as.environment(paste("package", chip, sep=":"))
-    if (substr(chip, nchar(chip) - 2, nchar(chip)) == ".db")
-        chip <- substr(chip, 1, nchar(chip) - 3)
-    exists(paste(chip, "dbconn", sep="_"), pkgEnv, inherits=FALSE)
-}
-
-dbpackage_prefix <- function(chip) {
-    substr(chip, 1L, nchar(chip) - 3L)
-}
-
-annpkg_prefix <- function(chip) {
-    if (is_dbpackage(chip))
-      dbpackage_prefix(chip)
-    else
-      chip
-}
-
 
 .aaf.raw <- function(probeids, chip, type) {
 
