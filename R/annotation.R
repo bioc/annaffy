@@ -211,7 +211,7 @@ setMethod("getHTML", "ANY", function(object) {
     if( is.double(object) )
         object <- signif(object, ifelse(is.null(getOption("sigfigs")), 6, 
                                                 getOption("sigfigs")))
-    if( !nchar(text <- getText(object)) )
+    if( all(nchar(text <- getText(object))== 0))
         return("")
     if( length(url <- getURL(object)) )
         return(paste(paste("<a href=\"", url, "\">", text, "</a>", sep = ""), collapse = " "))
