@@ -150,7 +150,7 @@ aaf.handler <- function (probeids, chip, name)
         use <- rep(TRUE, length(deps))
         pkgSyms <- ls(paste("package:", chip, sep=""))
         prefix <- annpkg_prefix(chip)
-        for (i in seq(along = deps)) {
+        for (i in seq(along = deps)[-1]) {
             if (any(!(paste(prefix, deps[[i]], sep="") %in% pkgSyms)))
               use[i] <- FALSE
         }
