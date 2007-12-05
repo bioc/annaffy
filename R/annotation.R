@@ -516,21 +516,36 @@ setClass("aafGO", "aafList", prototype = list())
 
 aafGO <- function(probeids, chip) {
 
-    gos <- .aaf.raw(probeids, chip, "GO")
+    chkPkgs(chip)
+
+    require(chip, character.only = TRUE) ||
+        stop(paste("Couldn't load data package", chip))
+    chip <- annpkg_prefix(chip)
+    
+    dbconn <- do.call(paste(chip, "_dbconn", sep = ""), list())
+
+	try(dbGetQuery(dbconn, paste("ATTACH '", GO_dbfile(), "' as go;", sep = "")), silent = TRUE)
+	
+	probeidsfmt <- paste(paste("'", probeids, "'", sep = ""), collapse = ",")
+	
+	dbquery <- paste("SELECT probe_id,go_id,term,type,evidence FROM (SELECT probe_id,go_id,evidence,'Biological Process' as type FROM probes INNER JOIN go_bp USING ('id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Molecular Function' as type FROM probes INNER JOIN go_mf USING ('id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Cellular Component' as type FROM probes INNER JOIN go_cc USING ('id') WHERE probe_id in (", probeidsfmt, ")) INNER JOIN go.go_term USING ('go_id')", sep = "")
+	
+	dbresult <- dbGetQuery(dbconn, dbquery)
+
     results <- vector("list", length(probeids))
     attrs <- list(class = "aafGO")
     for(i in 1:length(probeids)) {
-        go <- gos[[i]]
-        results[[i]] <- list()
-        if( is.list(go) ) {
-            for(j in 1:length(go)) {
-                nametype <- .aaf.goterm(go[[j]])
-                if( length(nametype) ) {
-                    result <- list()
-                    attributes(result) <- list(id = go[[j]]$GOID, name = nametype$name, type = nametype$type, evid = go[[j]]$Evidence, class = "aafGOItem")
-                    results[[i]] <- c(results[[i]], list(asS4(result)))
-                }
-            }
+    	idx <- which(dbresult$probe_id == probeids[i])
+        results[[i]] <- vector("list", length(idx))
+        for(j in seq_along(idx)) {
+        	idxj <- idx[j]
+            result <- list()
+            attributes(result) <- list(id = dbresult$probe_id[idxj], 
+                                       name = dbresult$term[idxj], 
+                                       type = dbresult$type[idxj], 
+                                       evid = dbresult$evidence[idxj], 
+                                       class = "aafGOItem")
+            results[[i]][[j]] <- asS4(result)
         }
         attributes(results[[i]]) <- attrs
         results[[i]] <- asS4(results[[i]])
