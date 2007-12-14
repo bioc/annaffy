@@ -524,21 +524,21 @@ aafGO <- function(probeids, chip) {
     
     dbconn <- do.call(paste(chip, "_dbconn", sep = ""), list())
 
-	try(dbGetQuery(dbconn, paste("ATTACH '", GO_dbfile(), "' as go;", sep = "")), silent = TRUE)
-	
-	probeidsfmt <- paste(paste("'", probeids, "'", sep = ""), collapse = ",")
-	
-	dbquery <- paste("SELECT probe_id,go_id,term,type,evidence FROM (SELECT probe_id,go_id,evidence,'Biological Process' as type FROM probes INNER JOIN go_bp USING ('id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Molecular Function' as type FROM probes INNER JOIN go_mf USING ('id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Cellular Component' as type FROM probes INNER JOIN go_cc USING ('id') WHERE probe_id in (", probeidsfmt, ")) INNER JOIN go.go_term USING ('go_id')", sep = "")
-	
-	dbresult <- dbGetQuery(dbconn, dbquery)
+    try(dbGetQuery(dbconn, paste("ATTACH '", GO_dbfile(), "' as go;", sep = "")), silent = TRUE)
+    
+    probeidsfmt <- paste(paste("'", probeids, "'", sep = ""), collapse = ",")
+    
+    dbquery <- paste("SELECT probe_id,go_id,term,type,evidence FROM (SELECT probe_id,go_id,evidence,'Biological Process' as type FROM probes INNER JOIN go_bp USING ('id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Molecular Function' as type FROM probes INNER JOIN go_mf USING ('id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Cellular Component' as type FROM probes INNER JOIN go_cc USING ('id') WHERE probe_id in (", probeidsfmt, ")) INNER JOIN go.go_term USING ('go_id')", sep = "")
+    
+    dbresult <- dbGetQuery(dbconn, dbquery)
 
     results <- vector("list", length(probeids))
     attrs <- list(class = "aafGO")
     for(i in 1:length(probeids)) {
-    	idx <- which(dbresult$probe_id == probeids[i])
+        idx <- which(dbresult$probe_id == probeids[i])
         results[[i]] <- vector("list", length(idx))
         for(j in seq_along(idx)) {
-        	idxj <- idx[j]
+            idxj <- idx[j]
             result <- list()
             attributes(result) <- list(id = dbresult$probe_id[idxj], 
                                        name = dbresult$term[idxj], 
