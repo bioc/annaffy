@@ -528,7 +528,7 @@ aafGO <- function(probeids, chip) {
     
     probeidsfmt <- paste(paste("'", probeids, "'", sep = ""), collapse = ",")
     
-    dbquery <- paste("SELECT probe_id,go_id,term,type,evidence FROM (SELECT probe_id,go_id,evidence,'Biological Process' as type FROM probes INNER JOIN go_bp USING ('id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Molecular Function' as type FROM probes INNER JOIN go_mf USING ('id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Cellular Component' as type FROM probes INNER JOIN go_cc USING ('id') WHERE probe_id in (", probeidsfmt, ")) INNER JOIN go.go_term USING ('go_id')", sep = "")
+    dbquery <- paste("SELECT probe_id,go_id,term,type,evidence FROM (SELECT probe_id,go_id,evidence,'Biological Process' as type FROM probes INNER JOIN go_bp USING ('_id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Molecular Function' as type FROM probes INNER JOIN go_mf USING ('_id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Cellular Component' as type FROM probes INNER JOIN go_cc USING ('_id') WHERE probe_id in (", probeidsfmt, ")) INNER JOIN go.go_term USING ('go_id')", sep = "")
     
     dbresult <- dbGetQuery(dbconn, dbquery)
 
