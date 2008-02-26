@@ -1,12 +1,12 @@
 \name{aafTableInt}
 \alias{aafTableInt}
-\title{Constructor for aafTable objects from exprSets}
+\title{Constructor for aafTable objects from ExpressionSets}
 \description{
   Constructs an \code{aafTable} object containing expression values
-  given an exprSet.
+  given an ExpressionSet.
 
   In the resulting HTML table, the expression values will have
-  backgrounds with varrying intensities of green depending on the
+  backgrounds with varying intensities of green depending on the
   expression measure.
 }
 
@@ -15,7 +15,7 @@ aafTableInt(exprSet, colnames = sampleNames(exprSet),
             probeids = featureNames(exprSet))
 }
 \arguments{
-  \item{exprSet}{object of class \code{exprSet}}
+  \item{exprSet}{object of class \code{ExpressionSet}}
   \item{colnames}{character vector of column names}
   \item{probeids}{character vector of probe ids associated with each row}
 }
@@ -31,4 +31,4 @@ aafTableInt(exprSet, colnames = sampleNames(exprSet),
   \link{aafIntensity}
 }
 
-\keyword{ file }
+\keyword{file}

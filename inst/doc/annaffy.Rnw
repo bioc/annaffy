@@ -227,7 +227,7 @@ database. It supports nearly all the annotation data available
 through Bioconductor. Additionally, it has facilities for including
 and colorizing user data in an informative manner.
 
-The rest of this tutorial will make use of an \verb+exprSet+
+The rest of this tutorial will make use of an \verb+ExpressionSet+
 generated for demonstration purposes. It contains anonymized data
 from a microarray experiment which used the Affymetrix hgu95av2
 chip. There are eight total samples in the set, four control samples

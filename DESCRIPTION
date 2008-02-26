@@ -1,5 +1,5 @@
 Package: annaffy
-Version: 1.11.3
+Version: 1.11.4
 Date: 2007-12-05
 Title: Annotation tools for Affymetrix biological metadata
 Author: Colin A. Smith <annaffy@colinsmith.org>
@@ -15,4 +15,3 @@ Description: Functions for handling data from Bioconductor Affymetrix
 License: LGPL
 LazyLoad: yes
 biocViews: OneChannel, Microarray, Annotation, GO, Pathways, ReportWriting
-
