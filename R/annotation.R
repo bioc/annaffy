@@ -540,7 +540,7 @@ aafGO <- function(probeids, chip) {
         for(j in seq_along(idx)) {
             idxj <- idx[j]
             result <- list()
-            attributes(result) <- list(id = dbresult$probe_id[idxj], 
+            attributes(result) <- list(id = dbresult$go_id[idxj], 
                                        name = dbresult$term[idxj], 
                                        type = dbresult$type[idxj], 
                                        evid = dbresult$evidence[idxj], 
