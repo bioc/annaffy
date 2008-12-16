@@ -52,7 +52,7 @@ is.annpkg <- function(packages, lib.loc = NULL) {
     chip <- annpkg_prefix(chip)
     environment <- paste(chip, type, sep="")
 
-    do.call("mget", list(probeids, as.name(environment), ifnotfound=NA))
+    do.call(mget, list(probeids, as.name(environment), ifnotfound=NA))
 }
 
 .aaf.character <- function(probeids, chip, type, class) {
