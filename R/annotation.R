@@ -527,8 +527,24 @@ aafGO <- function(probeids, chip) {
     try(dbGetQuery(dbconn, paste("ATTACH '", GO_dbfile(), "' as go;", sep = "")), silent = TRUE)
     
     probeidsfmt <- paste(paste("'", probeids, "'", sep = ""), collapse = ",")
+
+##Since this will involve different org packages, making the query more complex means I have to use the ORGPACKAGE value, and then attach that.
+orgPkg =get(paste( gsub(".db","",chip),"ORGPKG",sep=""))
+orgFile= get(paste(orgPkg,"_dbfile",sep=""))
+##Attach statement for org
+try(dbGetQuery(dbconn, paste("ATTACH '", orgFile(), "' as org;", sep = "")), silent = TRUE)
     
-    dbquery <- paste("SELECT probe_id,go_id,term,type,evidence FROM (SELECT probe_id,go_id,evidence,'Biological Process' as type FROM probes INNER JOIN go_bp USING ('_id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Molecular Function' as type FROM probes INNER JOIN go_mf USING ('_id') WHERE probe_id in (", probeidsfmt, ") UNION SELECT probe_id,go_id,evidence,'Cellular Component' as type FROM probes INNER JOIN go_cc USING ('_id') WHERE probe_id in (", probeidsfmt, ")) INNER JOIN go.go_term USING ('go_id')", sep = "")
+dbquery <- paste("SELECT probe_id,go_id,term,type,evidence FROM (
+                          SELECT probe_id,go_id,evidence,'Biological Process' as type FROM probes
+                          INNER JOIN (select * from org.genes INNER JOIN org.go_bp USING ('_id') ) USING ('gene_id')
+                          WHERE probe_id in (", probeidsfmt, ")
+                          UNION SELECT probe_id,go_id,evidence,'Molecular Function' as type FROM probes
+                          INNER JOIN (select * from org.genes INNER JOIN org.go_mf USING ('_id') ) USING ('gene_id')
+                          WHERE probe_id in (", probeidsfmt, ")
+                          UNION SELECT probe_id,go_id,evidence,'Cellular Component' as type FROM probes
+                          INNER JOIN (select * from org.genes INNER JOIN org.go_cc USING ('_id') ) USING ('gene_id')
+                          WHERE probe_id in (", probeidsfmt, ") )
+                          INNER JOIN go.go_term USING ('go_id')", sep = "")
     
     dbresult <- dbGetQuery(dbconn, dbquery)
 
