@@ -31,11 +31,12 @@ resources both interactively and through statically generated HTML
 pages.
 
 The core functionality of \verb+annaffy+ depends on annotation
-contained in Bioconductor data packages. The data packages are
-created by another package called \verb+AnnBuilder+. It gathers
-annotation data from many diverse sources and makes the information
-easily processed by R. Preconstructed packages for most Affymetrix
-chips are available on the Bioconductor web site.
+contained in Bioconductor data packages. The data packages are created
+by the \verb+SQLForge+ code inside of another package called
+\verb+AnnotationDbi+. It gathers annotation data from many diverse
+sources and makes the information easily processed by
+R. Preconstructed packages for most Affymetrix chips are available on
+the Bioconductor web site.
 
 \section{Loading Annotation Data}
 
