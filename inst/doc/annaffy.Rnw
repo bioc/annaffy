@@ -208,7 +208,7 @@ Look for the enzyme in question to be highlighted in red.)
 
 <<>>=
 paths <- aafPathway(probeids, "hgu95av2.db")
-getURL(paths[[5]])
+getURL(paths[[4]])
 @
 
 \section{Building HTML Pages}
