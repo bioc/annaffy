@@ -462,7 +462,7 @@ Lastly, two points for power users. One, the text search is always
 case insensitive. Second, individual search terms are treated as
 Perl compatible regular expressions. This means that you should be
 cautious of special regular expression characters. See the Perl
-documentation\footnote{\url{http://www.perldoc.com/perl5.8.0/pod/perlre.html}}
+documentation\footnote{\url{http://perldoc.perl.org/perlre.html}}
 for further information about how to use regular expressions.
 
 \subsection{Gene Ontology}
