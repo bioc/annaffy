@@ -187,7 +187,7 @@ setReplaceMethod("probeids", "aafTable", function(object, value) {
     return(object)
 })
 
-setMethod("colnames", c("aafTable","missing","missing"), function(x) {
+setMethod("colnames", "aafTable", function(x, do.NULL=TRUE, prefix="col") {
 
     return(names(x@table))
 })

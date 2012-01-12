@@ -6,7 +6,7 @@
 \alias{probeids<-}
 \alias{probeids<-,aafTable-method}
 \alias{colnames}
-\alias{colnames,aafTable,missing,missing-method}
+\alias{colnames,aafTable-method}
 \alias{colnames<-}
 \alias{colnames<-,aafTable-method}
 \alias{dim.aafTable}
