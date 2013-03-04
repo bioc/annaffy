@@ -3,7 +3,7 @@ chkPkgs <- function(pkg) {
   if (pkg %in% getOption("aafChkPkgs"))
     return()
   
-  pkgLoc <- .find.package(pkg, quiet=TRUE)
+  pkgLoc <- find.package(pkg, quiet=TRUE)
   if (length(pkgLoc) == 0) { ## pkg not installed
     print(paste("You are missing", pkg,
                 "looking to see if it is available."))
