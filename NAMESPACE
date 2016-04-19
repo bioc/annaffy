@@ -1,5 +1,6 @@
 import("AnnotationDbi")
 importClassesFrom("Biobase", "AssayData")
+importMethodsFrom(DBI, dbGetQuery)
 
 exportPattern("^aaf")
 
