@@ -579,7 +579,7 @@ setMethod("getText", "aafGO", function(object) {
 
 setMethod("getURL", "aafGO", function(object) {
 
-    url <- "http://amigo.geneontology.org/cgi-bin/amigo/go.cgi?view=query&query="
+    url <- "http://amigo.geneontology.org/amigo/term/"
 
     if( !length(object) )
         return(character(0))
@@ -629,7 +629,7 @@ setMethod("getText", "aafGOItem", function(object) {
 
 setMethod("getURL", "aafGOItem", function(object) {
 
-    url <- "http://amigo.geneontology.org/cgi-bin/amigo/go.cgi?view=details&query="
+    url <- "http://amigo.geneontology.org/amigo/term/"
 
     if( !length(object@id) )
         return(character(0))
