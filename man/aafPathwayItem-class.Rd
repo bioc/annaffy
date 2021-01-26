@@ -24,7 +24,7 @@ Objects can also be created manually by calls of the form
       Object of class \code{character} containing KEGG pathway id
     }
     \item{\code{name}:}{
-      Object of class \code{character} containing textual name
+      Object of class \code{character} containing textual name (no longer supported)
     }
     \item{\code{enzyme}:}{
       Object of class \code{character} containing the Enzyme

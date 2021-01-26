@@ -3,7 +3,7 @@
 % likely to be overwritten.
 %
 %\VignetteIndexEntry{annaffy Primer}
-%\VignetteDepends{Biobase, BiocManager, GO.db, KEGG.db, multtest, hgu95av2.db}
+%\VignetteDepends{Biobase, BiocManager, GO.db, multtest, hgu95av2.db}
 %\VignetteKeywords{HTML, URL}
 %\VignettePackage{annaffy}
 \documentclass[12pt]{article}

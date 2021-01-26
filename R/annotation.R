@@ -668,7 +668,10 @@ aafPathway <- function(probeids, chip) {
             results[[i]] <- list()
         }
         else {
-            name <- mget(pathway, KEGGPATHID2NAME, ifnotfound=NA)
+            # old method of getting pathway name from KEGG.db, now defunct
+            #name <- mget(pathway, KEGGPATHID2NAME, ifnotfound=NA)
+            # just give the pathway identifier as the name instead
+            name <- pathway
             enzyme <- enzymes[[i]][1]
             if( is.na(enzyme) )
                 enzyme <- character(0)
