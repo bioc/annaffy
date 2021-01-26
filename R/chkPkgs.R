@@ -8,15 +8,13 @@ chkPkgs <- function(pkg) {
     print(paste("You are missing", pkg,
                 "looking to see if it is available."))
     
-    biocContribUrl <- sapply(Biobase:::biocReposList(), contrib.url)
-    biocPkgs <- available.packages(biocContribUrl)
-    if (pkg %in% biocPkgs[, "Package"]) {
+    available_packages <- BiocManager:::available(pkg, FALSE)
+    if (pkg %in% available_packages) {
       ans <- userQuery(paste("Package", pkg, "is available for",
                              "download, would you like to install?"))
       
       if (ans == "y")
-        install.packages(pkg, repos=Biobase:::biocReposList(),
-                         dependencies="Depends")
+        BiocManager::install(pkg)
       
     } else {
       print(paste("Package", pkg, "was not found in the Bioconductor",
