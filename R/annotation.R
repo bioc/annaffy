@@ -14,7 +14,7 @@ is_dbpackage <- function(chip) {
 is.annpkg <- function(packages, lib.loc = NULL) {
     
     envnames <- c("ACCNUM", "CHR", "CHRLOC", "ENZYME", "GENENAME", "GO",
-                  "ENTREZID", "MAP", "PATH", "PMID", "SYMBOL", "UNIGENE")
+                  "ENTREZID", "MAP", "PATH", "PMID", "SYMBOL")
     
     result <- logical(length(packages))
     
@@ -139,7 +139,6 @@ aaf.handler <- function (probeids, chip, name)
                  "GenBank" = "ACCNUM",
                  "Gene" = "ENTREZID",
                  "Cytoband" = c("MAP", "ENTREZID"),
-                 "UniGene" = "UNIGENE",
                  "PubMed" = "PMID",
                  "Gene Ontology" = "GO",
                  "Pathway" = c("PATH", "ENZYME")
@@ -169,7 +168,6 @@ aaf.handler <- function (probeids, chip, name)
                Gene = aafLocusLink(probeids, chip),
                LocusLink = aafLocusLink(probeids, chip),
                Cytoband = aafCytoband(probeids, chip),
-               UniGene = aafUniGene(probeids, chip),
                PubMed = aafPubMed(probeids, chip),
                "Gene Ontology" = aafGO(probeids, chip),
                Pathway = aafPathway(probeids, chip))
@@ -449,35 +447,6 @@ setMethod("show", "aafCytoband", function(object) {
     cat("An object of class \"aafCytoband\"\n")
     cat("@band ", object@band, "\n", sep = "\"")
     cat("@gene ", object@gene, "\n", sep = "\"")
-})
-
-## Define class aafUniGene
-
-setClass("aafUniGene", "character", prototype = character(0))
-
-aafUniGene <- function(probeids, chip) {
-
-    return(.aaf.character(probeids, chip, "UNIGENE", "aafUniGene"))
-}
-
-setMethod("getURL", "aafUniGene", function(object) {
-
-    url <- "http://www.ncbi.nlm.nih.gov/UniGene/clust.cgi?ORG="
-    urlinter <- "&CID="
-
-    if( !length(object) )
-        return(character(0))
-    return(paste(url, sub("[.]", urlinter, object), sep = ""))
-})
-
-setMethod("getHTML", "aafUniGene", function(object) {
-
-    if( !length(object) )
-        return("")
-    if( length(url <- getURL(object)) )
-        return(paste(paste("<a href=\"", url, "\">", object, "</a>", sep = ""), collapse = " "))
-    else
-        return(text)
 })
 
 ## Define class aafPubMed
