@@ -27,8 +27,7 @@ exportClasses(
               "aafPubMed",
               "aafSigned",
               "aafSymbol",
-              "aafTable",
-              "aafUniGene"
+              "aafTable"
               )
 
 exportMethods(
